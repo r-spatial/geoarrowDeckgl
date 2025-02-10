@@ -1,6 +1,6 @@
 addDeckGlPolygons = function(map, opts) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
-  
+
   let data_fl = document.getElementById(opts.layerId + '-1-attachment');
 
   fetch(data_fl.href)
@@ -28,7 +28,7 @@ addDeckGlPolygons = function(map, opts) {
         //https://deck.gl/docs/developer-guide/performance#supply-attributes-directly
         */
         // getFillColor: opts.dataAccessors.getLineColor,
-        
+
         getFillColor: ({ index, data }) => {
           if (typeof(opts.dataAccessors.getFillColor) === "string") {
             const recordBatch = data.data;
@@ -38,11 +38,32 @@ addDeckGlPolygons = function(map, opts) {
           }
         },
         // TODO: all accessors should behave as fillColor!
-        getLineColor: opts.dataAccessors.getLineColor,
-        getLineWidth: opts.dataAccessors.getLineWidth,
-        getElevation: opts.dataAccessors.getElevation
+        getLineColor: ({ index, data }) => {
+          if (typeof(opts.dataAccessors.getLineColor) === "string") {
+            const recordBatch = data.data;
+            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getLineColor]);
+          } else {
+            return opts.dataAccessors.getLineColor;
+          }
+        },
+        getLineWidth: ({ index, data }) => {
+          if (typeof(opts.dataAccessors.getLineWidth) === "string") {
+            const recordBatch = data.data;
+            return recordBatch.get(index)[opts.dataAccessors.getLineWidth];
+          } else {
+            return opts.dataAccessors.getLineWidth;
+          }
+        },
+        getElevation: ({ index, data }) => {
+          if (typeof(opts.dataAccessors.getElevation) === "string") {
+            const recordBatch = data.data;
+            return recordBatch.get(index)[opts.dataAccessors.getElevation];
+          } else {
+            return opts.dataAccessors.getElevation;
+          }
+        },
       });
-      
+
       var decklayer = new deck.MapboxOverlay({
         interleaved: true,
         layers: [geoArrowPolygon],
@@ -57,7 +78,7 @@ function hexToRGBA(hex) {
     // remove invalid characters
     hex = hex.replace(/[^0-9a-fA-F]/g, '');
 
-    if (hex.length < 5) { 
+    if (hex.length < 5) {
         // 3, 4 characters double-up
         hex = hex.split('').map(s => s + s).join('');
     }

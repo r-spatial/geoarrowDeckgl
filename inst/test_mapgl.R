@@ -17,7 +17,17 @@ dat = st_as_sf(
   , coords = c("x", "y")
   , crs = 4326
 )
-dat$fillColor = color_values(rnorm(nrow(dat)), alpha = sample.int(255, nrow(dat), replace = TRUE))
+dat$fillColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+)
+dat$lineColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+  , palette = "inferno"
+)
+dat$radius = sample.int(15, nrow(dat), replace = TRUE)
+dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
 
 options(viewer = NULL)
 
@@ -32,22 +42,22 @@ m |>
     , renderOptions = list(
       radiusUnits = "pixels"
       , radiusScale = 1
-      , lineWidthUnits = "pixels"
+      , lineWidthUnits = "meters"
       , lineWidthScale = 1
-      , stroked = FALSE
+      , stroked = TRUE
       , filled = TRUE
       , radiusMinPixels = 3
       , radiusMaxPixels = 15
       , lineWidthMinPixels = 0
-      , lineWidthMaxPixels = 1
+      , lineWidthMaxPixels = 15
       , billboard = FALSE
       , antialiasing = FALSE
     )
     , dataAccessors = list(
-      getRadius = 4
+      getRadius = "radius"
       , getFillColor = "fillColor"
-      , getLineColor = c(0, 255, 255, 255)
-      , getLineWidth = 1
+      , getLineColor = "lineColor" #c(0, 255, 255, 255)
+      , getLineWidth = "lineWidth"
     )
   ) |>
   add_layers_control(collapsible = TRUE, layers = c("test"))
@@ -55,7 +65,18 @@ m |>
 
 ### polygons ==================================
 dat = st_read("~/Downloads/data.gpkg")
-dat$fillColor = color_values(rnorm(nrow(dat)))
+dat$fillColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+)
+dat$lineColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+  , palette = "inferno"
+)
+dat$elevation = sample.int(200, nrow(dat), replace = TRUE)
+dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
+
 
 options(viewer = NULL)
 
@@ -70,13 +91,13 @@ m |>
     , renderOptions = list(
       filled = TRUE
       , stroked = TRUE
-      , extruded = FALSE
-      , wireframe = FALSE
+      , extruded = TRUE
+      , wireframe = TRUE
       , elevationScale = 1
       , lineWidthUnits = "meters"
       , lineWidthScale = 1
-      , lineWidthMinPixels = 0
-      , lineWidthMaxPixels = 2
+      , lineWidthMinPixels = 1
+      , lineWidthMaxPixels = 15
       , lineJointRounded = FALSE
       , lineMiterLimit = 4
       # , material = TRUE
@@ -85,9 +106,9 @@ m |>
     )
     , dataAccessors = list(
       getFillColor = "fillColor"
-      , getLineColor = c(255, 0, 255, 255)
-      , getLineWidth = 1
-      , getElevation = 100
+      , getLineColor = c(0, 0, 0) #"lineColor"
+      , getLineWidth = "lineWidth"
+      , getElevation = "elevation"
     )
   ) |>
   add_layers_control(collapsible = TRUE, layers = c("test"))
