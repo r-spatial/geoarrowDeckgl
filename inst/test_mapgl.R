@@ -32,7 +32,8 @@ dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
 options(viewer = NULL)
 
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
-  add_navigation_control(visualize_pitch = TRUE)
+  add_navigation_control(visualize_pitch = TRUE) |>
+  add_layers_control(collapsible = TRUE, layers = c("test"))
 
 m |>
   geoarrowDeckgl:::add_deckgl_scatterplot(
@@ -59,8 +60,7 @@ m |>
       , getLineColor = "lineColor" #c(0, 255, 255, 255)
       , getLineWidth = "lineWidth"
     )
-  ) |>
-  add_layers_control(collapsible = TRUE, layers = c("test"))
+  )
 
 
 ### polygons ==================================
@@ -81,7 +81,8 @@ dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
 options(viewer = NULL)
 
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
-  add_navigation_control(visualize_pitch = TRUE)
+  add_navigation_control(visualize_pitch = TRUE) |>
+  add_layers_control(collapsible = TRUE, layers = c("test"))
 
 m |>
   geoarrowDeckgl:::add_deckgl_polygons(
@@ -110,5 +111,4 @@ m |>
       , getLineWidth = "lineWidth"
       , getElevation = "elevation"
     )
-  ) |>
-  add_layers_control(collapsible = TRUE, layers = c("test"))
+  )

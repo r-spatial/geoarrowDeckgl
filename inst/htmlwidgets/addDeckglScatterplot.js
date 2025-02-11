@@ -55,14 +55,52 @@ addDeckGlScatterplot = function(map, opts) {
             return opts.dataAccessors.getLineWidth;
           }
         },
+        pickable: true,
+/*
+        onHover: (info, event) => {
+          //debugger;
+          let popups = document.getElementsByClassName("maplibregl-popup");
+          for (let i = 0; i < popups.length; i++) {
+            popups[i].remove();
+          }
+          if (info.object.id === undefined) {
+            return;
+          }
+          //console.log(info.coordinate);
+
+          const description = info.object.id.toString();
+          let popup = new maplibregl.Popup()
+            .setLngLat(info.coordinate)
+            .setText(description);
+
+          popup.addTo(map);
+        },
+*/
+        //onHover: updateTooltip
       });
 
       var decklayer = new deck.MapboxOverlay({
         interleaved: true,
+        //views: [new deck.MapView({id: 'maplibregl'})],
         layers: [geoArrowScatterplot],
       });
       map.addControl(decklayer);
-      return map;
+
+      map.on("click", (e) => {
+        //debugger;
+        let info = e.target.__deck.deckPicker.lastPickedInfo.info;
+        if (info === null) {
+          return;
+        } else {
+          let popup = new maplibregl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(info.object["fillColor"]);
+          popup.addTo(map);
+        }
+      });
+
+
+      //return map;
     });
 };
 
