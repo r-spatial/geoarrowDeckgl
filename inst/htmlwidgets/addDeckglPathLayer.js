@@ -1,4 +1,4 @@
-addDeckglScatterplotLayer = function(map, opts) {
+addDeckglPathLayer = function(map, opts) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
 
   let data_fl = document.getElementById(opts.layerId + '-1-attachment');
@@ -6,55 +6,41 @@ addDeckglScatterplotLayer = function(map, opts) {
   fetch(data_fl.href)
     .then(result => Arrow.tableFromIPC(result))
     .then(arrow_table => {
-      let geoArrowScatterplot = new gaDeckLayers.GeoArrowScatterplotLayer({
+      let geoArrowPathLayer = new gaDeckLayers.GeoArrowPathLayer({
         id: opts.layerId,
         data: arrow_table,
-        getPosition: arrow_table.getChild(opts.geom_column_name),
-        radiusUnits: opts.renderOptions.radiusUnits,
-        radiusScale: opts.renderOptions.radiusScale,
-        lineWidthUnits: opts.renderOptions.lineWidthUnits,
-        lineWidthScale: opts.renderOptions.lineWidthScale,
-        stroked: opts.renderOptions.stroked,
-        filled: opts.renderOptions.filled,
-        radiusMinPixels: opts.renderOptions.radiusMinPixels,
-        radiusMaxPixels: opts.renderOptions.radiusMaxPixels,
-        lineWidthMinPixels: opts.renderOptions.lineWidthMinPixels,
-        lineWidthMaxPixels: opts.renderOptions.lineWidthMaxPixels,
+        getPath: arrow_table.getChild(opts.geom_column_name),
+
+        // render options
+        widthUnits: opts.renderOptions.widthUnits,
+        widthScale: opts.renderOptions.widthScale,
+        widthMinPixels: opts.renderOptions.widthMinPixels,
+        widthMaxPixels: opts.renderOptions.widthMaxPixels,
+        capRounded: opts.renderOptions.capRounded,
+        jointRounded: opts.renderOptions.jointRounded,
         billboard: opts.renderOptions.billboard,
-        antialiasing: opts.renderOptions.antialiasing,
-        getRadius: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getRadius) === "string") {
+        miterLimit: opts.renderOptions.miterLimit,
+        // _pathType: opts.renderOptions._pathType,
+
+        // data accessros
+        getColor: ({ index, data }) => {
+          if (typeof(opts.dataAccessors.getColor) === "string") {
             const recordBatch = data.data;
-            return recordBatch.get(index)[opts.dataAccessors.getRadius];
+            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getColor]);
           } else {
-            return opts.dataAccessors.getRadius;
+            return opts.dataAccessors.getColor;
           }
         },
-        getFillColor: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getFillColor) === "string") {
+        getWidth: ({ index, data }) => {
+          if (typeof(opts.dataAccessors.getWidth) === "string") {
             const recordBatch = data.data;
-            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getFillColor]);
+            return recordBatch.get(index)[opts.dataAccessors.getWidth];
           } else {
-            return opts.dataAccessors.getFillColor;
+            return opts.dataAccessors.getWidth;
           }
         },
-        // TODO: all accessors should behave as fillColor!
-        getLineColor: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getLineColor) === "string") {
-            const recordBatch = data.data;
-            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getLineColor]);
-          } else {
-            return opts.dataAccessors.getLineColor;
-          }
-        },
-        getLineWidth: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getLineWidth) === "string") {
-            const recordBatch = data.data;
-            return recordBatch.get(index)[opts.dataAccessors.getLineWidth];
-          } else {
-            return opts.dataAccessors.getLineWidth;
-          }
-        },
+
+        // interactivity
         pickable: true,
 /*
         onHover: (info, event) => {
@@ -82,7 +68,7 @@ addDeckglScatterplotLayer = function(map, opts) {
       var decklayer = new deck.MapboxOverlay({
         interleaved: true,
         //views: [new deck.MapView({id: 'maplibregl'})],
-        layers: [geoArrowScatterplot],
+        layers: [geoArrowPathLayer],
       });
       map.addControl(decklayer);
 
@@ -94,7 +80,7 @@ addDeckglScatterplotLayer = function(map, opts) {
         } else {
           let popup = new maplibregl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(info.object["fillColor"]);
+            .setHTML(info.object["NAME"]);
           popup.addTo(map);
         }
       });

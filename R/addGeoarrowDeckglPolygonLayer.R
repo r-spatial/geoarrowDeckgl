@@ -1,13 +1,13 @@
-add_deckgl_scatterplot = function(
+addGeoarrowDeckglPolygonLayer = function(
     map
-    , source
+    , data
     , layerId
-    , geom_column_name = attr(source, "sf_column")
+    , geom_column_name = attr(data, "sf_column")
     , renderOptions = list()
     , dataAccessors = list()
 ) {
 
-  path_layer = writeInterleavedGeoarrow(source, layerId, geom_column_name)
+  path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
 
   map$dependencies = c(
     map$dependencies
@@ -21,10 +21,10 @@ add_deckgl_scatterplot = function(
     )
     , list(
       htmltools::htmlDependency(
-        name = "deckglScatterplot"
+        name = "deckglPolygons"
         , version = "0.0.1"
         , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-        , script = "addDeckglScatterplot.js"
+        , script = "addDeckglPolygons.js"
       )
     )
     , arrowDependencies()
@@ -41,7 +41,7 @@ add_deckgl_scatterplot = function(
       "function(el, x, data) {
         debugger;
         map = this.getMap();
-        addDeckGlScatterplot(map, data);
+        addDeckglPolygonLayer(map, data);
         addGlobeControl(map);
       }"
     )

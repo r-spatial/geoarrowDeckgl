@@ -1,4 +1,4 @@
-addDeckGlPolygons = function(map, opts) {
+addDeckglPolygonLayer = function(map, opts) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
 
   let data_fl = document.getElementById(opts.layerId + '-1-attachment');

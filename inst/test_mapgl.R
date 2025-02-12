@@ -36,8 +36,8 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   add_layers_control(collapsible = TRUE, layers = c("test"))
 
 m |>
-  geoarrowDeckgl:::add_deckgl_scatterplot(
-    source = dat
+  geoarrowDeckgl:::addGeoarrowDeckglScatterplotLayer(
+    data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
     , renderOptions = list(
@@ -63,6 +63,7 @@ m |>
   )
 
 
+
 ### polygons ==================================
 dat = st_read("~/Downloads/data.gpkg")
 dat$fillColor = color_values(
@@ -82,23 +83,24 @@ options(viewer = NULL)
 
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
   add_navigation_control(visualize_pitch = TRUE) |>
-  add_layers_control(collapsible = TRUE, layers = c("test"))
+  add_layers_control(collapsible = TRUE, layers = c("test")) |>
+  fit_bounds(dat, animate = FALSE)
 
 m |>
-  geoarrowDeckgl:::add_deckgl_polygons(
-    source = dat
+  geoarrowDeckgl:::addGeoarrowDeckglPolygonLayer(
+    data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
     , renderOptions = list(
       filled = TRUE
       , stroked = TRUE
-      , extruded = TRUE
+      , extruded = FALSE
       , wireframe = TRUE
       , elevationScale = 1
-      , lineWidthUnits = "meters"
+      , lineWidthUnits = "pixels"
       , lineWidthScale = 1
-      , lineWidthMinPixels = 1
-      , lineWidthMaxPixels = 15
+      , lineWidthMinPixels = 0
+      , lineWidthMaxPixels = 2
       , lineJointRounded = FALSE
       , lineMiterLimit = 4
       # , material = TRUE
@@ -107,8 +109,58 @@ m |>
     )
     , dataAccessors = list(
       getFillColor = "fillColor"
-      , getLineColor = c(0, 0, 0) #"lineColor"
-      , getLineWidth = "lineWidth"
+      , getLineColor = "lineColor"
+      , getLineWidth = 1 # "lineWidth"
       , getElevation = "elevation"
     )
   )
+
+## geojson
+maplibre() |>
+  fit_bounds(dat, animate = FALSE) |>
+  add_fill_layer(
+    id = "test"
+    , source = dat
+  )
+
+### lines ======================================
+dat = st_read("~/Downloads/DLM_4000_GEWAESSER_20211015.gpkg", layer = "GEW_4100_FLIESSEND_L")
+dat = st_transform(dat, crs = "EPSG:4326")
+dat$lineColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+  , palette = "viridis"
+)
+dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
+
+
+options(viewer = NULL)
+
+m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
+  add_navigation_control(visualize_pitch = TRUE) |>
+  add_layers_control(collapsible = TRUE, layers = c("test"))
+
+m |>
+  geoarrowDeckgl:::addGeoarrowDeckglPathLayer(
+    data = dat
+    , layerId = "test"
+    , geom_column_name = attr(dat, "sf_column")
+    , renderOptions = list(
+      widthUnits = "pixels"
+      , widthScale = 1
+      , widthMinPixels = 1
+      , widthMaxPixels = 5
+      , capRounded = TRUE
+      , jointRounded = FALSE
+      , billboard = FALSE
+      , miterLimit = 4
+      # , material = TRUE
+      # , "_normalize" = FALSE
+      # , "_windingOrder" = "CW"
+    )
+    , dataAccessors = list(
+      getColor = "lineColor"
+      , getWidth = 1 # "lineWidth"
+    )
+  )
+
