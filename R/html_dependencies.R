@@ -47,7 +47,7 @@ geoarrowDeckglLayersDependencies = function() {
       "geoarrow-deckgl-layers",
       '0.3.0-17',
       src = c(
-        href = "https://cdn.jsdelivr.net/npm/@geoarrow/deck.gl-layers@0.3.0-beta.17/dist"
+        href = "https://cdn.jsdelivr.net/npm/@geoarrow/deck.gl-layers@0.3.0/dist"
       )
       , script = "dist.umd.min.js"
     )
