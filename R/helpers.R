@@ -17,3 +17,39 @@ writeInterleavedGeoarrow = function(data, layerId, geom_column_name) {
   return(path_layer)
 
 }
+
+
+popupOptions = function(...) {
+
+  default_lst = list(
+    anchor = "bottom"
+    , className = ""
+    , closeButton = TRUE
+    , closeOnClick = TRUE
+    , closeOnMove = FALSE
+    , focusAfterOpen = TRUE
+    , maxWidth = "none"
+  )
+
+  dotlist = list(...)
+
+  utils::modifyList(default_lst, dotlist)
+}
+
+
+tooltipOptions = function(...) {
+
+  default_lst = list(
+    anchor = "top-left"
+    , className = "geoarrow-deckgl-tooltip"
+    , closeButton = FALSE
+    , closeOnClick = FALSE
+    , closeOnMove = FALSE
+    , focusAfterOpen = TRUE
+    , maxWidth = "none"
+  )
+
+  dotlist = list(...)
+
+  utils::modifyList(default_lst, dotlist)
+}

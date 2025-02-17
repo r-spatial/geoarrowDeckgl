@@ -56,70 +56,80 @@ addDeckglScatterplotLayer = function(map, opts) {
           }
         },
         pickable: true,
-/*
+
         onHover: (info, event) => {
-          //debugger;
-          let popups = document.getElementsByClassName("maplibregl-popup");
-          for (let i = 0; i < popups.length; i++) {
-            popups[i].remove();
-          }
-          if (info.object.id === undefined) {
+          if (opts.tooltip === null) {
             return;
           }
-          //console.log(info.coordinate);
+          if (map.getLayoutProperty(opts.layerId, 'visibility') === 'none') {
+            return;
+          }
+          if (opts.tooltipOptions.length !== 0) {
+            //debugger;
+            let tooltips = document.getElementsByClassName('geoarrow-deckgl-tooltip');
+            for (let i = 0; i < tooltips.length; i++) {
+              tooltips[i].remove();
+            }
+            if (info.picked === false) {
+              return;
+            }
 
-          const description = info.object.id.toString();
-          let popup = new maplibregl.Popup()
+            let tooltip = new maplibregl.Popup(
+              opts.tooltipOptions
+            )
             .setLngLat(info.coordinate)
-            .setText(description);
-
-          popup.addTo(map);
+            .setHTML(
+              objectToTable(
+                info.object,
+                className = "",
+                opts.tooltip,
+                opts.geom_column_name
+              )
+            );
+            tooltip.addTo(map);
+          }
         },
-*/
-        //onHover: updateTooltip
+
       });
 
       var decklayer = new deck.MapboxOverlay({
         interleaved: true,
-        //views: [new deck.MapView({id: 'maplibregl'})],
         layers: [geoArrowScatterplot],
       });
       map.addControl(decklayer);
 
-      map.on("click", (e) => {
-        //debugger;
-        let info = e.target.__deck.deckPicker.lastPickedInfo.info;
-        if (info === null) {
-          return;
-        } else {
-          let popup = new maplibregl.Popup()
+      if (opts.popupOptions.length !== 0) {
+        map.on("click", (e) => {
+          //debugger;
+          if (opts.popup === null) {
+            return;
+          }
+          if (map.getLayoutProperty(opts.layerId, 'visibility') === 'none') {
+            return;
+          }
+          let info = e.target.__deck.deckPicker.lastPickedInfo.info;
+          if (info === null) {
+            return;
+          } else {
+            let popup = new maplibregl.Popup(
+              opts.popupOptions
+            )
             .setLngLat(e.lngLat)
-            .setHTML(info.object["fillColor"]);
-          popup.addTo(map);
-        }
-      });
+            .setHTML(
+              objectToTable(
+                info.object,
+                className = "",
+                opts.popup,
+                opts.geom_column_name
+              )
+            );
+            popup.addTo(map);
+          }
+        });
+      }
 
-
-      //return map;
     });
 };
 
 
-function hexToRGBA(hex) {
-    // remove invalid characters
-    hex = hex.replace(/[^0-9a-fA-F]/g, '');
-
-    if (hex.length < 5) {
-        // 3, 4 characters double-up
-        hex = hex.split('').map(s => s + s).join('');
-    }
-
-    // parse pairs of two
-    let rgba = hex.match(/.{1,2}/g).map(s => parseInt(s, 16));
-
-    // alpha code between 0 & 1 / default 1
-    //rgba[3] = rgba.length > 3 ? parseFloat(rgba[3] / 255).toFixed(2): 1;
-
-    return rgba; //'rgba(' + rgba.join(', ') + ')';
-}
 

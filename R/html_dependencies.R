@@ -81,3 +81,15 @@ deckglMapboxDependency = function() {
     )
   )
 }
+
+## helpers js ==================================================================
+helpersDependency = function() {
+  list(
+    htmltools::htmlDependency(
+      "helpers"
+      , '0.0.1'
+      , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
+      , script = "helpers.js"
+    )
+  )
+}

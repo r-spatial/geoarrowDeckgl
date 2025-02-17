@@ -6,7 +6,7 @@ library(colourvalues)
 
 
 ### points =========================
-n = 1e6
+n = 5e5
 dat = data.frame(
   id = 1:n
   , x = runif(n, -180, 180)
@@ -40,7 +40,7 @@ m |>
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    , renderOptions = list(
+    , render_options = list(
       radiusUnits = "pixels"
       , radiusScale = 1
       , lineWidthUnits = "meters"
@@ -54,12 +54,16 @@ m |>
       , billboard = FALSE
       , antialiasing = FALSE
     )
-    , dataAccessors = list(
+    , data_accessors = list(
       getRadius = "radius"
       , getFillColor = "fillColor"
       , getLineColor = "lineColor" #c(0, 255, 255, 255)
       , getLineWidth = "lineWidth"
     )
+    , popup = FALSE
+    # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
+    , tooltip = TRUE
+    # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
   )
 
 
@@ -84,7 +88,7 @@ options(viewer = NULL)
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
   add_navigation_control(visualize_pitch = TRUE) |>
   add_layers_control(collapsible = TRUE, layers = c("test")) |>
-  fit_bounds(dat, animate = FALSE)
+  fit_bounds(st_bbox(dat), animate = FALSE)
 
 m |>
   geoarrowDeckgl:::addGeoarrowDeckglPolygonLayer(
@@ -94,7 +98,7 @@ m |>
     , renderOptions = list(
       filled = TRUE
       , stroked = TRUE
-      , extruded = FALSE
+      , extruded = TRUE
       , wireframe = TRUE
       , elevationScale = 1
       , lineWidthUnits = "pixels"
