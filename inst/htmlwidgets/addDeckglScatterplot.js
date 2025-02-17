@@ -98,12 +98,9 @@ addDeckglScatterplotLayer = function(map, opts) {
       });
       map.addControl(decklayer);
 
-      if (opts.popupOptions.length !== 0) {
+      if (opts.popup !== null) {
         map.on("click", (e) => {
           //debugger;
-          if (opts.popup === null) {
-            return;
-          }
           if (map.getLayoutProperty(opts.layerId, 'visibility') === 'none') {
             return;
           }

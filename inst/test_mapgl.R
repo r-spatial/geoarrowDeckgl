@@ -62,7 +62,7 @@ m |>
     )
     , popup = FALSE
     # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = TRUE
+    , tooltip = "id"
     # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
   )
 
