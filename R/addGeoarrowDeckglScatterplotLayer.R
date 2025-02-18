@@ -40,7 +40,7 @@ addGeoarrowDeckglScatterplotLayer = function(
         name = "deckglScatterplot"
         , version = "0.0.1"
         , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-        , script = "addDeckglScatterplot.js"
+        , script = "addGeoArrowDeckglScatterplot.js"
       )
     )
     , arrowDependencies()
@@ -58,7 +58,7 @@ addGeoarrowDeckglScatterplotLayer = function(
       "function(el, x, data) {
         debugger;
         map = this.getMap();
-        addDeckglScatterplotLayer(map, data);
+        addGeoArrowDeckglScatterplotLayer(map, data);
         addGlobeControl(map);
       }"
     )

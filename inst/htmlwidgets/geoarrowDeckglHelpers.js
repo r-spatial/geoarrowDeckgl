@@ -54,3 +54,29 @@ function hexToRGBA(hex) {
 
     return rgba; //'rgba(' + rgba.join(', ') + ')';
 }
+
+function isHexColor(string) {
+  let reg = /^#([0-9A-F]{3}){1,2}[0-9a-f]{0,2}$/i;
+  return reg.test(string);
+}
+
+function colorAccessor(index, data, color)  {
+  if (isHexColor(color)) {
+    return hexToRGBA(color);
+  }
+  if (typeof(color) === "string") {
+    const recordBatch = data.data;
+    return hexToRGBA(recordBatch.get(index)[color]);
+  }
+  return color;
+}
+
+function attributeAccessor(index, data, property) {
+  if (typeof(property) === "string") {
+    const recordBatch = data.data;
+    return recordBatch.get(index)[property];
+  } else {
+    return property;
+  }
+}
+

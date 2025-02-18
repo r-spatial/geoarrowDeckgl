@@ -56,15 +56,16 @@ m |>
     )
     , data_accessors = list(
       getRadius = "radius"
-      , getFillColor = "fillColor"
-      , getLineColor = "lineColor" #c(0, 255, 255, 255)
+      , getFillColor = "fillColor" # "#00ffff45"
+      , getLineColor = "lineColor" # c(0, 255, 255, 130)
       , getLineWidth = "lineWidth"
     )
-    , popup = "test bla bla"
+    , popup = TRUE
     # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
     , tooltip = NULL
     # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
   )
+
 
 
 

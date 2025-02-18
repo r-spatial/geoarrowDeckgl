@@ -24,7 +24,7 @@ addGeoarrowDeckglPolygonLayer = function(
         name = "deckglPolygons"
         , version = "0.0.1"
         , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-        , script = "addDeckglPolygons.js"
+        , script = "addGeoArrowDeckglPolygons.js"
       )
     )
     , arrowDependencies()
@@ -41,7 +41,7 @@ addGeoarrowDeckglPolygonLayer = function(
       "function(el, x, data) {
         debugger;
         map = this.getMap();
-        addDeckglPolygonLayer(map, data);
+        addGeoArrowDeckglPolygonLayer(map, data);
         addGlobeControl(map);
       }"
     )

@@ -1,4 +1,4 @@
-addDeckglScatterplotLayer = function(map, opts) {
+addGeoArrowDeckglScatterplotLayer = function(map, opts) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
 
   let data_fl = document.getElementById(opts.layerId + '-1-attachment');
@@ -10,6 +10,8 @@ addDeckglScatterplotLayer = function(map, opts) {
         id: opts.layerId,
         data: arrow_table,
         getPosition: arrow_table.getChild(opts.geom_column_name),
+
+        // render options
         radiusUnits: opts.renderOptions.radiusUnits,
         radiusScale: opts.renderOptions.radiusScale,
         lineWidthUnits: opts.renderOptions.lineWidthUnits,
@@ -22,39 +24,22 @@ addDeckglScatterplotLayer = function(map, opts) {
         lineWidthMaxPixels: opts.renderOptions.lineWidthMaxPixels,
         billboard: opts.renderOptions.billboard,
         antialiasing: opts.renderOptions.antialiasing,
-        getRadius: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getRadius) === "string") {
-            const recordBatch = data.data;
-            return recordBatch.get(index)[opts.dataAccessors.getRadius];
-          } else {
-            return opts.dataAccessors.getRadius;
-          }
-        },
-        getFillColor: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getFillColor) === "string") {
-            const recordBatch = data.data;
-            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getFillColor]);
-          } else {
-            return opts.dataAccessors.getFillColor;
-          }
-        },
-        // TODO: all accessors should behave as fillColor!
-        getLineColor: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getLineColor) === "string") {
-            const recordBatch = data.data;
-            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getLineColor]);
-          } else {
-            return opts.dataAccessors.getLineColor;
-          }
-        },
-        getLineWidth: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getLineWidth) === "string") {
-            const recordBatch = data.data;
-            return recordBatch.get(index)[opts.dataAccessors.getLineWidth];
-          } else {
-            return opts.dataAccessors.getLineWidth;
-          }
-        },
+
+// TODO: have data and color functions for the accessors
+
+        // data accessros
+        getRadius: ({ index, data }) =>
+          attributeAccessor(index, data, opts.dataAccessors.getRadius),
+        getFillColor: ({ index, data }) =>
+          colorAccessor(index, data, opts.dataAccessors.getFillColor),
+        getLineColor: ({ index, data }) =>
+          colorAccessor(index, data, opts.dataAccessors.getLineColor),
+        getLineWidth: ({ index, data }) =>
+          attributeAccessor(index, data, opts.dataAccessors.getLineWidth),
+
+// TODO: have functions for hover and click
+
+        // interactivity
         pickable: true,
 
         onHover: (info, event) => {

@@ -86,10 +86,10 @@ deckglMapboxDependency = function() {
 helpersDependency = function() {
   list(
     htmltools::htmlDependency(
-      "helpers"
+      "geoarrowDeckglHelpers"
       , '0.0.1'
       , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-      , script = "helpers.js"
+      , script = "geoarrowDeckglHelpers.js"
     )
   )
 }

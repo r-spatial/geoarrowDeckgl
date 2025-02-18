@@ -24,7 +24,7 @@ addGeoarrowDeckglPathLayer = function(
         name = "deckglPathLayer"
         , version = "0.0.1"
         , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-        , script = "addDeckglPathLayer.js"
+        , script = "addGeoArrowDeckglPathLayer.js"
       )
     )
     , arrowDependencies()
@@ -41,7 +41,7 @@ addGeoarrowDeckglPathLayer = function(
       "function(el, x, data) {
         debugger;
         map = this.getMap();
-        addDeckglPathLayer(map, data);
+        addGeoArrowDeckglPathLayer(map, data);
         addGlobeControl(map);
       }"
     )

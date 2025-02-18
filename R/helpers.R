@@ -1,7 +1,7 @@
 writeInterleavedGeoarrow = function(data, layerId, geom_column_name) {
-  path_layer = tempfile()
-  dir.create(path_layer)
-  path_layer = paste0(path_layer, "/", layerId, "_layer.arrow")
+  layer_path = tempfile()
+  dir.create(layer_path)
+  layer_path = paste0(layer_path, "/", layerId, "_layer.arrow")
 
   geom_type = geoarrow::infer_geoarrow_schema(data, coord_type = "INTERLEAVED")
   data_schema = nanoarrow::infer_nanoarrow_schema(data)
@@ -12,9 +12,9 @@ writeInterleavedGeoarrow = function(data, layerId, geom_column_name) {
     , schema = data_schema
   )
 
-  nanoarrow::write_nanoarrow(data_out, path_layer)
+  nanoarrow::write_nanoarrow(data_out, layer_path)
 
-  return(path_layer)
+  return(layer_path)
 
 }
 
@@ -31,9 +31,9 @@ popupOptions = function(...) {
     , maxWidth = "none"
   )
 
-  dotlist = list(...)
+  dot_lst = list(...)
 
-  utils::modifyList(default_lst, dotlist)
+  utils::modifyList(default_lst, dot_lst)
 }
 
 
@@ -49,7 +49,7 @@ tooltipOptions = function(...) {
     , maxWidth = "none"
   )
 
-  dotlist = list(...)
+  dot_lst = list(...)
 
-  utils::modifyList(default_lst, dotlist)
+  utils::modifyList(default_lst, dot_lst)
 }
