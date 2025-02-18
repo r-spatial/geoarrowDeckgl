@@ -16,6 +16,11 @@ function objectToTable(obj, className, columns, geom_column_name) {
     idx.push(cols.indexOf(columns));
   }
 
+  if (idx[0] === -1) { // popup string not a table column name?
+    // return "<a class=" + className + ">" + columns + "</a>";
+    return columns;
+  }
+
   let cls = [];
   idx.forEach(id => { cls.push(cols.at(id)) });
   let vls = [];

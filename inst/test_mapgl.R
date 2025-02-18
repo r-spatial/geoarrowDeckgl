@@ -60,9 +60,9 @@ m |>
       , getLineColor = "lineColor" #c(0, 255, 255, 255)
       , getLineWidth = "lineWidth"
     )
-    , popup = FALSE
+    , popup = "test bla bla"
     # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = "id"
+    , tooltip = NULL
     # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
   )
 
