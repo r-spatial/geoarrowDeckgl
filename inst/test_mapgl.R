@@ -27,7 +27,7 @@ dat$lineColor = color_values(
   , palette = "inferno"
 )
 dat$radius = sample.int(15, nrow(dat), replace = TRUE)
-dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
+dat$lineWidth = sample.int(5, nrow(dat), replace = TRUE)
 
 options(viewer = NULL)
 
@@ -40,29 +40,29 @@ m |>
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    , render_options = list(
-      radiusUnits = "pixels"
-      , radiusScale = 1
-      , lineWidthUnits = "meters"
-      , lineWidthScale = 1
-      , stroked = TRUE
-      , filled = TRUE
-      , radiusMinPixels = 3
-      , radiusMaxPixels = 15
-      , lineWidthMinPixels = 0
-      , lineWidthMaxPixels = 15
-      , billboard = FALSE
-      , antialiasing = FALSE
-    )
+    # , render_options = list(
+    #   radiusUnits = "pixels"
+    #   , radiusScale = 1
+    #   , lineWidthUnits = "meters"
+    #   , lineWidthScale = 1
+    #   , stroked = TRUE
+    #   , filled = TRUE
+    #   , radiusMinPixels = 3
+    #   , radiusMaxPixels = 15
+    #   , lineWidthMinPixels = 0
+    #   , lineWidthMaxPixels = 15
+    #   , billboard = FALSE
+    #   , antialiasing = FALSE
+    # )
     , data_accessors = list(
       getRadius = "radius"
       , getFillColor = "fillColor" # "#00ffff45"
       , getLineColor = "lineColor" # c(0, 255, 255, 130)
       , getLineWidth = "lineWidth"
     )
-    , popup = FALSE
+    , popup = TRUE
     # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = TRUE
+    , tooltip = FALSE
     # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
   )
 
@@ -89,30 +89,17 @@ options(viewer = NULL)
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
   add_navigation_control(visualize_pitch = TRUE) |>
   add_layers_control(collapsible = TRUE, layers = c("test")) |>
-  fit_bounds(st_bbox(dat), animate = FALSE)
+  fit_bounds(unname(st_bbox(dat)), animate = FALSE)
 
 m |>
   geoarrowDeckgl:::addGeoarrowDeckglPolygonLayer(
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    , renderOptions = list(
-      filled = TRUE
-      , stroked = TRUE
-      , extruded = TRUE
-      , wireframe = TRUE
-      , elevationScale = 1
-      , lineWidthUnits = "pixels"
-      , lineWidthScale = 1
-      , lineWidthMinPixels = 0
-      , lineWidthMaxPixels = 2
-      , lineJointRounded = FALSE
-      , lineMiterLimit = 4
-      # , material = TRUE
-      # , "_normalize" = FALSE
-      # , "_windingOrder" = "CW"
+    , render_options = geoarrowDeckgl:::renderOptions(
+      extruded = FALSE
     )
-    , dataAccessors = list(
+    , data_accessors = list(
       getFillColor = "fillColor"
       , getLineColor = "lineColor"
       , getLineWidth = 1 # "lineWidth"
@@ -120,16 +107,10 @@ m |>
     )
   )
 
-## geojson
-maplibre() |>
-  fit_bounds(dat, animate = FALSE) |>
-  add_fill_layer(
-    id = "test"
-    , source = dat
-  )
 
 ### lines ======================================
-dat = st_read("~/Downloads/DLM_4000_GEWAESSER_20211015.gpkg", layer = "GEW_4100_FLIESSEND_L")
+# dat = st_read("~/Downloads/DLM_4000_GEWAESSER_20211015.gpkg", layer = "GEW_4100_FLIESSEND_L")
+dat = st_read("~/Downloads/rivers_africa.fgb")
 dat = st_transform(dat, crs = "EPSG:4326")
 dat$lineColor = color_values(
   rnorm(nrow(dat))
@@ -150,22 +131,11 @@ m |>
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    , renderOptions = list(
-      widthUnits = "pixels"
-      , widthScale = 1
-      , widthMinPixels = 1
-      , widthMaxPixels = 5
-      , capRounded = TRUE
-      , jointRounded = FALSE
-      , billboard = FALSE
-      , miterLimit = 4
-      # , material = TRUE
-      # , "_normalize" = FALSE
-      # , "_windingOrder" = "CW"
-    )
-    , dataAccessors = list(
+    , render_options = geoarrowDeckgl:::renderOptions()
+    , data_accessors = list(
       getColor = "lineColor"
       , getWidth = 1 # "lineWidth"
     )
+    , popup = TRUE
   )
 

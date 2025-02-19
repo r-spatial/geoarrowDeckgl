@@ -3,9 +3,25 @@ addGeoarrowDeckglPolygonLayer = function(
     , data
     , layerId
     , geom_column_name = attr(data, "sf_column")
-    , renderOptions = list()
-    , dataAccessors = list()
+    , popup = NULL
+    , tooltip = NULL
+    , render_options = renderOptions()
+    , data_accessors = list()
+    , popup_options = popupOptions()
+    , tooltip_options = tooltipOptions()
 ) {
+
+  if (isTRUE(popup)) {
+    popup = names(data)
+  } else if (isFALSE(popup)) {
+    popup = NULL
+  }
+
+  if (isTRUE(tooltip)) {
+    tooltip = names(data)
+  } else if (isFALSE(tooltip)) {
+    tooltip = NULL
+  }
 
   path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
 
@@ -33,6 +49,7 @@ addGeoarrowDeckglPolygonLayer = function(
     , geoarrowDeckglLayersDependencies()
     , deckglDataAttachmentSrc(path_layer, layerId)
     , deckglMapboxDependency()
+    , helpersDependency()
   )
 
   map = htmlwidgets::onRender(
@@ -48,8 +65,12 @@ addGeoarrowDeckglPolygonLayer = function(
     , data = list(
       geom_column_name = geom_column_name
       , layerId = layerId
-      , renderOptions = renderOptions
-      , dataAccessors = dataAccessors
+      , popup = popup
+      , tooltip = tooltip
+      , renderOptions = render_options
+      , dataAccessors = data_accessors
+      , popupOptions = popup_options
+      , tooltipOptions = tooltip_options
     )
   )
 
