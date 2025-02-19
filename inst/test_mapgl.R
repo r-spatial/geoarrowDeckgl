@@ -60,16 +60,16 @@ m |>
       , getLineColor = "lineColor" # c(0, 255, 255, 130)
       , getLineWidth = "lineWidth"
     )
-    , popup = TRUE
+    , popup = FALSE
     # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = NULL
+    , tooltip = TRUE
     # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
   )
 
 
 
 
-### polygons ==================================
+  ### polygons ==================================
 dat = st_read("~/Downloads/data.gpkg")
 dat$fillColor = color_values(
   rnorm(nrow(dat))
