@@ -22,13 +22,13 @@ writeInterleavedGeoarrow = function(data, layerId, geom_column_name) {
 renderOptions = function(...) {
 
   # infer the function that called renderOptions
-  syscall1 = deparse(sys.call(1))[1]
-  rgx = gregexpr("^.*?(?=\\()", syscall1, perl = TRUE)[[1]]
-  len = attr(rgx, "match.length")
-  call = substr(syscall1, 1, len)
-  splt = unlist(strsplit(call, ":"))
-  fun = splt[length(splt)]
-  print(fun)
+  # syscall1 = deparse(sys.call(1))[1]
+  # rgx = gregexpr("^.*?(?=\\()", syscall1, perl = TRUE)[[1]]
+  # len = attr(rgx, "match.length")
+  # call = substr(syscall1, 1, len)
+  # splt = unlist(strsplit(call, ":"))
+  # fun = splt[length(splt)]
+  # print(fun)
 
   # TODO: switch defaults based on fun
 
