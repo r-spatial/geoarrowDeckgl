@@ -1,4 +1,4 @@
-addGeoarrowDeckglPathLayer = function(
+addGeoArrowScatterplotLayer = function(
     map
     , data
     , layerId
@@ -6,7 +6,7 @@ addGeoarrowDeckglPathLayer = function(
     , popup = NULL
     , tooltip = NULL
     , render_options = renderOptions()
-    , data_accessors = list()
+    , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
 ) {
@@ -37,10 +37,10 @@ addGeoarrowDeckglPathLayer = function(
     )
     , list(
       htmltools::htmlDependency(
-        name = "deckglPathLayer"
+        name = "deckglScatterplot"
         , version = "0.0.1"
         , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-        , script = "addGeoArrowDeckglPathLayer.js"
+        , script = "addGeoArrowDeckglScatterplotLayer.js"
       )
     )
     , arrowDependencies()
@@ -56,9 +56,8 @@ addGeoarrowDeckglPathLayer = function(
     map
     , htmlwidgets::JS(
       "function(el, x, data) {
-        debugger;
         map = this.getMap();
-        addGeoArrowDeckglPathLayer(map, data);
+        addGeoArrowDeckglScatterplotLayer(map, data);
         addGlobeControl(map);
       }"
     )

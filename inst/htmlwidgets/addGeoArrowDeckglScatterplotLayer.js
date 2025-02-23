@@ -25,8 +25,6 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
         billboard: opts.renderOptions.billboard,
         antialiasing: opts.renderOptions.antialiasing,
 
-// TODO: have data and color functions for the accessors
-
         // data accessros
         getRadius: ({ index, data }) =>
           attributeAccessor(index, data, opts.dataAccessors.getRadius),

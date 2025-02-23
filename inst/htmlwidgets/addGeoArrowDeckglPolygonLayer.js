@@ -1,4 +1,4 @@
-addGeoArrowDeckglPathLayer = function(map, opts) {
+addGeoArrowDeckglPolygonLayer = function(map, opts) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
 
   let data_fl = document.getElementById(opts.layerId + '-1-attachment');
@@ -6,39 +6,41 @@ addGeoArrowDeckglPathLayer = function(map, opts) {
   fetch(data_fl.href)
     .then(result => Arrow.tableFromIPC(result))
     .then(arrow_table => {
-      let geoArrowPathLayer = new gaDeckLayers.GeoArrowPathLayer({
+      let geoArrowPolygon = new gaDeckLayers.GeoArrowPolygonLayer({
         id: opts.layerId,
         data: arrow_table,
-        getPath: arrow_table.getChild(opts.geom_column_name),
+        getPolygon: arrow_table.getChild(opts.geom_column_name),
 
         // render options
-        widthUnits: opts.renderOptions.widthUnits,
-        widthScale: opts.renderOptions.widthScale,
-        widthMinPixels: opts.renderOptions.widthMinPixels,
-        widthMaxPixels: opts.renderOptions.widthMaxPixels,
-        capRounded: opts.renderOptions.capRounded,
-        jointRounded: opts.renderOptions.jointRounded,
-        billboard: opts.renderOptions.billboard,
-        miterLimit: opts.renderOptions.miterLimit,
-        // _pathType: opts.renderOptions._pathType,
+        filled: opts.renderOptions.filled,
+        stroked: opts.renderOptions.stroked,
+        extruded: opts.renderOptions.extruded,
+        wireframe: opts.renderOptions.wireframe,
+        elevationScale: opts.renderOptions.elevationScale,
+        lineWidthUnits: opts.renderOptions.lineWidthUnits,
+        lineWidthScale: opts.renderOptions.lineWidthScale,
+        lineWidthMinPixels: opts.renderOptions.lineWidthMinPixels,
+        lineWidthMaxPixels: opts.renderOptions.lineWidthMaxPixels,
+        lineJointRounded: opts.renderOptions.lineJointRounded,
+        lineMiterLimit: opts.renderOptions.lineMiterLimit,
+        /*
+        material: opts.renderOptions.material,
+        _normalize: opts.renderOptions._normalize,
+        _windingOrder: opts.renderOptions._windingOrder,
+        //https://deck.gl/docs/developer-guide/performance#supply-attributes-directly
+        */
 
         // data accessros
-        getColor: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getColor) === "string") {
-            const recordBatch = data.data;
-            return hexToRGBA(recordBatch.get(index)[opts.dataAccessors.getColor]);
-          } else {
-            return opts.dataAccessors.getColor;
-          }
-        },
-        getWidth: ({ index, data }) => {
-          if (typeof(opts.dataAccessors.getWidth) === "string") {
-            const recordBatch = data.data;
-            return recordBatch.get(index)[opts.dataAccessors.getWidth];
-          } else {
-            return opts.dataAccessors.getWidth;
-          }
-        },
+        getFillColor: ({ index, data }) =>
+          colorAccessor(index, data, opts.dataAccessors.getFillColor),
+        getLineColor: ({ index, data }) =>
+          colorAccessor(index, data, opts.dataAccessors.getLineColor),
+        getLineWidth: ({ index, data }) =>
+          attributeAccessor(index, data, opts.dataAccessors.getLineWidth),
+        getElevation: ({ index, data }) =>
+          attributeAccessor(index, data, opts.dataAccessors.getElevation),
+
+// TODO: have functions for hover and click
 
         // interactivity
         pickable: true,
@@ -80,8 +82,7 @@ addGeoArrowDeckglPathLayer = function(map, opts) {
 
       var decklayer = new deck.MapboxOverlay({
         interleaved: true,
-        //views: [new deck.MapView({id: 'maplibregl'})],
-        layers: [geoArrowPathLayer],
+        layers: [geoArrowPolygon],
       });
       map.addControl(decklayer);
 

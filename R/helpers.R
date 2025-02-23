@@ -1,24 +1,3 @@
-writeInterleavedGeoarrow = function(data, layerId, geom_column_name) {
-  layer_path = tempfile()
-  dir.create(layer_path)
-  layer_path = paste0(layer_path, "/", layerId, "_layer.arrow")
-
-  geom_type = geoarrow::infer_geoarrow_schema(data, coord_type = "INTERLEAVED")
-  data_schema = nanoarrow::infer_nanoarrow_schema(data)
-  data_schema$children[[geom_column_name]] = geom_type
-
-  data_out = nanoarrow::as_nanoarrow_array_stream(
-    data
-    , schema = data_schema
-  )
-
-  nanoarrow::write_nanoarrow(data_out, layer_path)
-
-  return(layer_path)
-
-}
-
-
 renderOptions = function(...) {
 
   # infer the function that called renderOptions
@@ -29,8 +8,8 @@ renderOptions = function(...) {
   # splt = unlist(strsplit(call, ":"))
   # fun = splt[length(splt)]
   # print(fun)
-
-  # TODO: switch defaults based on fun
+  #
+  # # TODO: switch defaults based on fun
 
   default_lst = list(
     radiusUnits = "pixels"
@@ -50,12 +29,31 @@ renderOptions = function(...) {
     , elevationScale = 1
     , lineJointRounded = FALSE
     , lineMiterLimit = 4
+    , widthUnits = "pixels"
     , widthScale = 1
     , widthMinPixels = 1
     , widthMaxPixels = 5
     , capRounded = TRUE
     , jointRounded = FALSE
     , miterLimit = 4
+  )
+
+  dot_lst = list(...)
+
+  utils::modifyList(default_lst, dot_lst)
+}
+
+
+dataAccessors = function(...) {
+
+  default_lst = list(
+    getRadius = 1
+    , getColor = c(0, 0, 0, 255)
+    , getFillColor = c(0, 0, 0, 130)
+    , getLineColor = c(0, 0, 0, 255)
+    , getLineWidth = 1
+    , getElevation = 1000
+    , getWidth = 1
   )
 
   dot_lst = list(...)

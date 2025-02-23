@@ -89,7 +89,7 @@ helpersDependency = function() {
       "geoarrowDeckglHelpers"
       , '0.0.1'
       , src = system.file("htmlwidgets", package = "geoarrowDeckgl")
-      , script = "geoarrowDeckglHelpers.js"
+      , script = "geoArrowDeckglHelpers.js"
     )
   )
 }

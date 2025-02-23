@@ -36,34 +36,21 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   add_layers_control(collapsible = TRUE, layers = c("test"))
 
 m |>
-  geoarrowDeckgl:::addGeoarrowDeckglScatterplotLayer(
+  geoarrowDeckgl:::addGeoArrowScatterplotLayer(
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    # , render_options = list(
-    #   radiusUnits = "pixels"
-    #   , radiusScale = 1
-    #   , lineWidthUnits = "meters"
-    #   , lineWidthScale = 1
-    #   , stroked = TRUE
-    #   , filled = TRUE
-    #   , radiusMinPixels = 3
-    #   , radiusMaxPixels = 15
-    #   , lineWidthMinPixels = 0
-    #   , lineWidthMaxPixels = 15
-    #   , billboard = FALSE
-    #   , antialiasing = FALSE
-    # )
-    , data_accessors = list(
+    , render_options = geoarrowDeckgl:::renderOptions()
+    , data_accessors = geoarrowDeckgl:::dataAccessors(
       getRadius = "radius"
-      , getFillColor = "fillColor" # "#00ffff45"
-      , getLineColor = "lineColor" # c(0, 255, 255, 130)
+      , getFillColor = "fillColor"
       , getLineWidth = "lineWidth"
+      , getLineColor = "lineColor"
     )
     , popup = TRUE
-    # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = FALSE
-    # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "bottom-right")
+    , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
+    , tooltip = TRUE
+    , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
   )
 
 
@@ -92,19 +79,20 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   fit_bounds(unname(st_bbox(dat)), animate = FALSE)
 
 m |>
-  geoarrowDeckgl:::addGeoarrowDeckglPolygonLayer(
+  geoarrowDeckgl:::addGeoArrowPolygonLayer(
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    , render_options = geoarrowDeckgl:::renderOptions(
-      extruded = FALSE
-    )
-    , data_accessors = list(
-      getFillColor = "fillColor"
-      , getLineColor = "lineColor"
-      , getLineWidth = 1 # "lineWidth"
-      , getElevation = "elevation"
-    )
+    , popup = TRUE
+    # , render_options = geoarrowDeckgl:::renderOptions(
+    #   extruded = TRUE
+    # )
+    # , data_accessors = geoarrowDeckgl:::dataAccessors(
+    #   getFillColor = "fillColor"
+    #   , getLineColor = "lineColor"
+    #   , getLineWidth = 1 # "lineWidth"
+    #   , getElevation = "elevation"
+    # )
   )
 
 
@@ -113,9 +101,8 @@ m |>
 dat = st_read("~/Downloads/rivers_africa.fgb")
 dat = st_transform(dat, crs = "EPSG:4326")
 dat$lineColor = color_values(
-  rnorm(nrow(dat))
-  , alpha = sample.int(255, nrow(dat), replace = TRUE)
-  , palette = "viridis"
+  dat$Strahler
+  , palette = "inferno"
 )
 dat$lineWidth = sample.int(1500, nrow(dat), replace = TRUE)
 
@@ -127,14 +114,18 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   add_layers_control(collapsible = TRUE, layers = c("test"))
 
 m |>
-  geoarrowDeckgl:::addGeoarrowDeckglPathLayer(
+  geoarrowDeckgl:::addGeoArrowPathLayer(
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
-    , render_options = geoarrowDeckgl:::renderOptions()
-    , data_accessors = list(
-      getColor = "lineColor"
-      , getWidth = 1 # "lineWidth"
+    , render_options = geoarrowDeckgl:::renderOptions(
+      widthUnits = "meters"
+      , widthScale = 100
+      , widthMaxPixels = 200
+    )
+    , data_accessors = geoarrowDeckgl:::dataAccessors(
+      getWidth = "Strahler"
+      , getColor = "lineColor"
     )
     , popup = TRUE
   )
