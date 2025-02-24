@@ -1,3 +1,56 @@
+#' Deck.gl render options
+#'
+#' In deck.gl every layer type has a specific set of render options, see e.g.
+#' those for [ScatterPlotLayer](https://deck.gl/docs/api-reference/layers/scatterplot-layer#render-options).
+#' This function sets all defaults for all available layer functions in this
+#' package.
+#' Please refer to the relevant [deck.gl documentation](https://deck.gl/docs/api-reference/layers/)
+#' for a more detailed description of the available layer functions.
+#' See Details for a list of currently available options, their defaults and the
+#' layer types they apply to.
+#'
+#' @param ... named options to be passed to the relevant deck.gl JavaScript Method.
+#'
+#' @details
+#' Currently, the following options are automatically set to he following defaults:
+#'
+#' * radiusUnits = "pixels" (ScatterplotLayer)
+#' * radiusScale = 1 (ScatterplotLayer)
+#' * lineWidthUnits = "pixels" (ScatterplotLayer, PolygonLayer)
+#' * lineWidthScale = 1 (ScatterplotLayer, PolygonLayer)
+#' * stroked = TRUE (ScatterplotLayer, PolygonLayer)
+#' * filled = TRUE (ScatterplotLayer, PolygonLayer)
+#' * radiusMinPixels = 3 (ScatterplotLayer)
+#' * radiusMaxPixels = 15 (ScatterplotLayer)
+#' * lineWidthMinPixels = 0 (ScatterplotLayer, PolygonLayer)
+#' * lineWidthMaxPixels = 15 (ScatterplotLayer, PolygonLayer)
+#' * billboard = FALSE (ScatterplotLayer, PathLayer)
+#' * antialiasing = FALSE (ScatterplotLayer)
+#' * extruded = FALSE (PolygonLayer)
+#' * wireframe = TRUE (PolygonLayer)
+#' * elevationScale = 1 (PolygonLayer)
+#' * lineJointRounded = FALSE (PolygonLayer)
+#' * lineMiterLimit = 4 (PolygonLayer)
+#' * widthUnits = "pixels" (PathLayer)
+#' * widthScale = 1 (PathLayer)
+#' * widthMinPixels = 1 (PathLayer)
+#' * widthMaxPixels = 5 (PathLayer)
+#' * capRounded = TRUE (PathLayer)
+#' * jointRounded = FALSE (PathLayer)
+#' * miterLimit = 4 (PathLayer)
+#'
+#' @return list with named options, possibly modified via `...` argument.
+#'
+#' @examples
+#' # default settings
+#' renderOptions()
+#'
+#' # modify selected options
+#' renderOptions(radiusUnits = "meters", radiusScale = 10)
+#'
+#'
+#' @export
+#'
 renderOptions = function(...) {
 
   # infer the function that called renderOptions
@@ -44,6 +97,51 @@ renderOptions = function(...) {
 }
 
 
+#' Deck.gl data accessors
+#'
+#' In deck.gl every layer type has a specific set of data accessors, see e.g.
+#' those for [ScatterPlotLayer](https://deck.gl/docs/api-reference/layers/scatterplot-layer#data-accessors).
+#' This function sets all defaults for all available layer functions in this
+#' package.
+#'
+#' Please refer to the relevant [deck.gl documentation](https://deck.gl/docs/api-reference/layers/)
+#' for a more detailed description of the available layer functions.
+#' See Details for a list of currently available accessors, their defaults and the
+#' layer types they apply to.
+#'
+#' If you want to map a certain accessor to a data specific value, you will need to
+#' add it to the data and provide the column name to the respective data accessor.
+#'
+#' @param ... named accessors to be passed to the relevant deck.gl JavaScript Method.
+#'
+#' @details
+#' Currently, the following accessors are automatically set to he following defaults:
+#'
+#' * getRadius = 1 (ScatterplotLayer)
+#' * getColor = c(0, 0, 0, 255) (ScatterplotLayer, PathLayer)
+#' * getFillColor = c(0, 0, 0, 130) (ScatterplotLayer, PolygonLayer)
+#' * getLineColor = c(0, 0, 0, 255) (ScatterplotLayer, PolygonLayer)
+#' * getLineWidth = 1 (ScatterplotLayer, PolygonLayer)
+#' * getElevation = 1000 (PolygonLayer)
+#' * getWidth = 1 (PathLayer)
+#'
+#' NOTE:
+#' * accessors `getPosition`, `getPath`, `getPolygon` are handled internally
+#' and should not be set!
+#' * all `get*Color` accessors will accept either a vector of rgb(a) integers (0-255)
+#' or a hex color string (potentially also with alpha) - see examples.
+#'
+#' @examples
+#' # default accessors
+#' dataAccessors()
+#'
+#' # modify selected accessors
+#' dataAccessors(
+#'   getFillColor = c(0, 0, 255, 130),
+#'   getLineColor = "#ff00ffaa"
+#' )
+#'
+#' @export
 dataAccessors = function(...) {
 
   default_lst = list(
