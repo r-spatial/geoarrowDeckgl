@@ -159,7 +159,56 @@ dataAccessors = function(...) {
   utils::modifyList(default_lst, dot_lst)
 }
 
-
+#' Options for popups and tooltips
+#'
+#' @param ... named options to be passed to the popups and tooltips of the map.
+#' See [maplibregl PopupOptions](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/PopupOptions/)
+#' for details and available options.
+#'
+#' @details
+#' Both `popupOptions` and `tooltipOptions` are passed to the PopupOptions object
+#' of the [maplibregl Popup](https://maplibre.org/maplibre-gl-js/docs/API/classes/Popup/)
+#' constructor. See [maplibregl PopupOptions](https://maplibre.org/maplibre-gl-js/docs/API/type-aliases/PopupOptions/)
+#' for details.
+#'
+#' The `popupOptions` and `tooltipOptions` in this package only differ in their
+#' respective defaults. These are:
+#'
+#' For `popupOptions`
+#'
+#' * anchor = "bottom"
+#' * className = ""
+#' * closeButton = TRUE
+#' * closeOnClick = TRUE
+#' * closeOnMove = FALSE
+#' * focusAfterOpen = TRUE
+#' * maxWidth = "none"
+#' * offset = 0
+#' * subpixelPositioning = FALSE
+#'
+#' For `tooltipOptions`
+#'
+#' * anchor = "top-left"
+#' * className = "geoarrow-deckgl-tooltip"
+#' * closeButton = FALSE
+#' * closeOnClick = FALSE
+#' * closeOnMove = FALSE
+#' * focusAfterOpen = TRUE
+#' * maxWidth = "none"
+#' * offset = 0
+#' * subpixelPositioning = FALSE
+#'
+#' @describeIn popupOptions options for popups
+#'
+#' @examples
+#' # default
+#' popupOptions()
+#' tooltipOptions()
+#'
+#' # modify selected options
+#' tooltipOptions(anchor = "bottom-right", className = "my-css-class-name")
+#'
+#' @export
 popupOptions = function(...) {
 
   default_lst = list(
@@ -170,6 +219,8 @@ popupOptions = function(...) {
     , closeOnMove = FALSE
     , focusAfterOpen = TRUE
     , maxWidth = "none"
+    , offset = 0
+    , subpixelPositioning = FALSE
   )
 
   dot_lst = list(...)
@@ -177,7 +228,9 @@ popupOptions = function(...) {
   utils::modifyList(default_lst, dot_lst)
 }
 
-
+#' @describeIn popupOptions options for tooltips
+#'
+#' @export
 tooltipOptions = function(...) {
 
   default_lst = list(
@@ -188,6 +241,8 @@ tooltipOptions = function(...) {
     , closeOnMove = FALSE
     , focusAfterOpen = TRUE
     , maxWidth = "none"
+    , offset = 0
+    , subpixelPositioning = FALSE
   )
 
   dot_lst = list(...)

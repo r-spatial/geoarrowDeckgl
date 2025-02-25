@@ -56,7 +56,7 @@ m |>
 
 
 
-  ### polygons ==================================
+### polygons ==================================
 dat = st_read("~/Downloads/data.gpkg")
 dat$fillColor = color_values(
   rnorm(nrow(dat))
