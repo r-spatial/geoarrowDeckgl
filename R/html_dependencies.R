@@ -5,7 +5,8 @@ deckglDependencies = function() {
       "deck.gl",
       '9.1.0',
       src = c(
-        href = "https://cdn.jsdelivr.net/npm/deck.gl@9.1.0"
+        # href = "https://cdn.jsdelivr.net/npm/deck.gl@9.1.0"
+        system.file("htmlwidgets/lib/deckgl", package = "geoarrowDeckgl")
       )
       , script = "dist.min.js"
     )
@@ -33,7 +34,8 @@ arrowDependencies = function() {
       "apache-arrow",
       '16.1.0',
       src = c(
-        href = "https://cdn.jsdelivr.net/npm/apache-arrow@16.1.0"
+        # href = "https://cdn.jsdelivr.net/npm/apache-arrow@16.1.0"
+        system.file("htmlwidgets/lib/apache-arrow", package = "geoarrowDeckgl")
       )
       , script = "Arrow.es2015.min.js"
     )
@@ -47,7 +49,8 @@ geoarrowDeckglLayersDependencies = function() {
       "geoarrow-deckgl-layers",
       '0.3.0-17',
       src = c(
-        href = "https://cdn.jsdelivr.net/npm/@geoarrow/deck.gl-layers@0.3.0/dist"
+        # href = "https://cdn.jsdelivr.net/npm/@geoarrow/deck.gl-layers@0.3.0/dist"
+        system.file("htmlwidgets/lib/deckgl-layers", package = "geoarrowDeckgl")
       )
       , script = "dist.umd.min.js"
     )
@@ -61,7 +64,8 @@ geoarrowjsDependencies = function() {
       "geoarrow-js",
       '0.3.0',
       src = c(
-        href = "https://cdn.jsdelivr.net/npm/@geoarrow/geoarrow-js@0.3.1/dist"
+        # href = "https://cdn.jsdelivr.net/npm/@geoarrow/geoarrow-js@0.3.1/dist"
+        system.file("htmlwidgets/lib/geoarrow-js", package = "geoarrowDeckgl")
       )
       , script = "geoarrow.umd.min.js"
     )
@@ -75,9 +79,10 @@ deckglMapboxDependency = function() {
       "deck.gl",
       '9.0.14',
       src = c(
-        href = "https://cdn.jsdelivr.net/npm/@deck.gl/mapbox@9.1.0/dist/"
+        # href = "https://cdn.jsdelivr.net/npm/@deck.gl/mapbox@9.1.0/dist/"
+        system.file("htmlwidgets/lib/deckgl-mapbox", package = "geoarrowDeckgl")
       )
-      , script = "resolve-layers.min.js"
+      , script = "mapbox-overlay.min.js"
     )
   )
 }
