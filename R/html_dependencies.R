@@ -1,12 +1,13 @@
 ## deck.gl js ==================================================================
 deckglDependencies = function() {
+  fldr = system.file("htmlwidgets/lib/deckgl", package = "geoarrowDeckgl")
   list(
     htmltools::htmlDependency(
       "deck.gl",
-      '9.1.0',
+      readLines(file.path(fldr, "version.txt")),
       src = c(
         # href = "https://cdn.jsdelivr.net/npm/deck.gl@9.1.0"
-        system.file("htmlwidgets/lib/deckgl", package = "geoarrowDeckgl")
+        fldr
       )
       , script = "dist.min.js"
     )
@@ -97,4 +98,9 @@ helpersDependency = function() {
       , script = "geoArrowDeckglHelpers.js"
     )
   )
+}
+
+
+getVersion = function(file) {
+  readLines(file)
 }
