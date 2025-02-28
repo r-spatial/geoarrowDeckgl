@@ -6,7 +6,7 @@ library(colourvalues)
 
 
 ### points =========================
-n = 5e5
+n = 5e4
 dat = data.frame(
   id = 1:n
   , x = runif(n, -180, 180)
@@ -128,5 +128,6 @@ m |>
       , getColor = "lineColor"
     )
     , popup = TRUE
+    , tooltip = FALSE
   )
 

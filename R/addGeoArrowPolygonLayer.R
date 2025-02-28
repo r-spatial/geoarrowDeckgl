@@ -1,3 +1,26 @@
+#' Add a geoarrow based Deck.gl PolygonLayer to a [mapgl::maplibre()] map.
+#'
+#' @param map the [mapgl::maplibre()] map to add the layer to.
+#' @param data a sf `(MULTI)POLYGON` object.
+#' @param layerId the layer id.
+#' @param geom_column_name the name of the geometry column of the sf object.
+#'  It is inferred automatically if only one is present.
+#' @param popup should a popup be contructed? If `TRUE`, will create a popup fromm all
+#' available attributes of the feature. Can also be a character vector of column
+#' names, on which case the popup will include only those columns. If a single character
+#' is supplied, then this will be shown for all features. If `NULL` (deafult) or
+#' `FALSE`, no popup will be shown.
+#' @param tooltip should a tooltip be contructed? If `TRUE`, will create a tooltip fromm all
+#' available attributes of the feature. Can also be a character vector of column
+#' names, on which case the tooltip will include only those columns. If a single character
+#' is supplied, then this will be shown for all features. If `NULL` (deafult) or
+#' `FALSE`, no tooltip will be shown.
+#' @param render_options a list of [renderOptions]
+#' @param data_accessors a list of [dataAccessors]
+#' @param popup_options a list of [popupOptions]
+#' @param tooltip_options a list of [tooltipOptions]
+#'
+#' @export
 addGeoArrowPolygonLayer = function(
     map
     , data

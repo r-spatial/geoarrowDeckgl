@@ -41,6 +41,8 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
         pickable: true,
 
         onHover: (info, event) => {
+          // TODO: change cursor to "pointer" on hover
+          // event.target.style.cursor = "pointer"
           if (opts.tooltip === null) {
             return;
           }

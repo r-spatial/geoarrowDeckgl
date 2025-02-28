@@ -18,5 +18,9 @@ StripTrailingWhitespace: Yes
 LineEndingConversion: Posix
 
 BuildType: Package
+PackageUseDevtools: Yes
+PackageCleanBeforeInstall: No
 PackageInstallArgs: --no-multiarch --with-keep.source
+PackageBuildArgs: --no-manual
+PackageCheckArgs: --as-cran --no-manual
 PackageRoxygenize: rd,collate,namespace

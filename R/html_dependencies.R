@@ -3,9 +3,9 @@ deckglDependencies = function() {
   fldr = system.file("htmlwidgets/lib/deckgl", package = "geoarrowDeckgl")
   list(
     htmltools::htmlDependency(
-      "deck.gl",
-      readLines(file.path(fldr, "version.txt")),
-      src = c(
+      "deck.gl"
+      , readLines(file.path(fldr, "version.txt"))
+      , src = c(
         # href = "https://cdn.jsdelivr.net/npm/deck.gl@9.1.0"
         fldr
       )
@@ -30,13 +30,14 @@ deckglDataAttachmentSrc = function(fn, layerId) {
 
 ## arrow js ====================================================================
 arrowDependencies = function() {
+  fldr = system.file("htmlwidgets/lib/apache-arrow", package = "geoarrowDeckgl")
   list(
     htmltools::htmlDependency(
-      "apache-arrow",
-      '16.1.0',
-      src = c(
+      "apache-arrow"
+      , readLines(file.path(fldr, "version.txt"))
+      , src = c(
         # href = "https://cdn.jsdelivr.net/npm/apache-arrow@16.1.0"
-        system.file("htmlwidgets/lib/apache-arrow", package = "geoarrowDeckgl")
+        fldr
       )
       , script = "Arrow.es2015.min.js"
     )
@@ -45,13 +46,14 @@ arrowDependencies = function() {
 
 ## geoarrow deck.gl-layers js ==================================================
 geoarrowDeckglLayersDependencies = function() {
+  fldr = system.file("htmlwidgets/lib/deckgl-layers", package = "geoarrowDeckgl")
   list(
     htmltools::htmlDependency(
-      "geoarrow-deckgl-layers",
-      '0.3.0-17',
-      src = c(
+      "geoarrow-deckgl-layers"
+      , readLines(file.path(fldr, "version.txt"))
+      , src = c(
         # href = "https://cdn.jsdelivr.net/npm/@geoarrow/deck.gl-layers@0.3.0/dist"
-        system.file("htmlwidgets/lib/deckgl-layers", package = "geoarrowDeckgl")
+        fldr
       )
       , script = "dist.umd.min.js"
     )
@@ -60,13 +62,14 @@ geoarrowDeckglLayersDependencies = function() {
 
 ## geoarrow js =================================================================
 geoarrowjsDependencies = function() {
+  fldr = system.file("htmlwidgets/lib/geoarrow-js", package = "geoarrowDeckgl")
   list(
     htmltools::htmlDependency(
-      "geoarrow-js",
-      '0.3.0',
-      src = c(
+      "geoarrow-js"
+      , readLines(file.path(fldr, "version.txt"))
+      , src = c(
         # href = "https://cdn.jsdelivr.net/npm/@geoarrow/geoarrow-js@0.3.1/dist"
-        system.file("htmlwidgets/lib/geoarrow-js", package = "geoarrowDeckgl")
+        fldr
       )
       , script = "geoarrow.umd.min.js"
     )
@@ -75,13 +78,14 @@ geoarrowjsDependencies = function() {
 
 ## deck.gl js mapbox ===========================================================
 deckglMapboxDependency = function() {
+  fldr = system.file("htmlwidgets/lib/deckgl-mapbox", package = "geoarrowDeckgl")
   list(
     htmltools::htmlDependency(
-      "deck.gl",
-      '9.0.14',
-      src = c(
+      "deck.gl"
+      , readLines(file.path(fldr, "version.txt"))
+      , src = c(
         # href = "https://cdn.jsdelivr.net/npm/@deck.gl/mapbox@9.1.0/dist/"
-        system.file("htmlwidgets/lib/deckgl-mapbox", package = "geoarrowDeckgl")
+        fldr
       )
       , script = "mapbox-overlay.min.js"
     )
@@ -98,9 +102,4 @@ helpersDependency = function() {
       , script = "geoArrowDeckglHelpers.js"
     )
   )
-}
-
-
-getVersion = function(file) {
-  readLines(file)
 }

@@ -1,12 +1,24 @@
 Package: geoarrowDeckgl
-Title: What the Package Does (One Line, Title Case)
+Title: Use geoArrow to add layers to a maplibre map
 Version: 0.0.0.9013
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    c(person(given = "Tim",
+             family = "Appelhans",
+             role = c("cre", "aut"),
+             email = "tim.appelhans@gmail.com"))
+Description: Leverages the very performant geoArrow memory layout to render
+    large data layers on a maplibre map. 
+License: MIT + file LICENSE
+Depends:
+    R (>= 3.1.0)
+Imports:
+    geoarrow,
+    htmltools,
+    htmlwidgets,
+    nanoarrow,
+Suggests:
+    mapgl,
+    sf
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

@@ -1,6 +1,6 @@
-#' Add a geoArrow based deckgl PathLayer to a maplibre map.
+#' Add a geoarrow based Deck.gl PathLayer to a [mapgl::maplibre()] map.
 #'
-#' @param map the `mapgl::maplibre()` map to add the layer to.
+#' @param map the [mapgl::maplibre()] map to add the layer to.
 #' @param data a sf `(MULTI)LINESTRING` object.
 #' @param layerId the layer id.
 #' @param geom_column_name the name of the geometry column of the sf object.
