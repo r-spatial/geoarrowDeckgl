@@ -35,7 +35,7 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
         getLineWidth: ({ index, data }) =>
           attributeAccessor(index, data, opts.dataAccessors.getLineWidth),
 
-// TODO: have functions for hover and click
+// TODO: have functions for hover and click, for both maplibre and mapbox
 
         // interactivity
         pickable: true,

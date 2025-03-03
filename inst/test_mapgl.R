@@ -35,6 +35,14 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   add_navigation_control(visualize_pitch = TRUE) |>
   add_layers_control(collapsible = TRUE, layers = c("test"))
 
+# m = mapboxgl(
+#   style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+#   , projection = "mercator"
+#   ) |>
+#   add_navigation_control(visualize_pitch = TRUE) |>
+#   add_layers_control(collapsible = TRUE, layers = c("test"))
+
+
 m |>
   geoarrowDeckgl:::addGeoArrowScatterplotLayer(
     data = dat
@@ -47,10 +55,10 @@ m |>
       , getLineWidth = "lineWidth"
       , getLineColor = "lineColor"
     )
-    , popup = TRUE
-    , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
+    , popup = FALSE
+    # , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
     , tooltip = TRUE
-    , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
+    # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
   )
 
 
