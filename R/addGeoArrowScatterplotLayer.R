@@ -125,8 +125,8 @@ addGeoArrowScatterplotLayer = function(
     map
     , htmlwidgets::JS(
       "function(el, x, data) {
+        // debugger;
         map = this.getMap();
-        debugger;
         addGeoArrowDeckglScatterplotLayer(map, data);
         addGlobeControl(map);
       }"
