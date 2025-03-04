@@ -1,6 +1,6 @@
 Package: geoarrowDeckgl
 Title: Use geoArrow to add layers to a maplibre map
-Version: 0.0.0.9013
+Version: 0.0.0.9014
 Authors@R: 
     c(person(given = "Tim",
              family = "Appelhans",
