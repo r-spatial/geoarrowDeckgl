@@ -1,5 +1,5 @@
 Package: geoarrowDeckgl
-Title: Use geoArrow to add layers to a maplibre map
+Title: Use geoArrow to add layers to a maplibregl/mapboxgl map
 Version: 0.0.0.9014
 Authors@R: 
     c(person(given = "Tim",
@@ -7,7 +7,7 @@ Authors@R:
              role = c("cre", "aut"),
              email = "tim.appelhans@gmail.com"))
 Description: Leverages the very performant geoArrow memory layout to render
-    large data layers on a maplibre map. 
+    large data layers on a maplibregl/mapboxgl map. 
 License: MIT + file LICENSE
 Depends:
     R (>= 3.1.0)

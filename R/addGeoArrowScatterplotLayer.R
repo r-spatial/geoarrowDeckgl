@@ -114,7 +114,7 @@ addGeoArrowScatterplotLayer = function(
     )
     , arrowDependencies()
     , geoarrowjsDependencies()
-    , deckglDependencies()
+    , if (!inherits(map, "mapdeck")) deckglDependencies()
     , geoarrowDeckglLayersDependencies()
     , deckglDataAttachmentSrc(path_layer, layerId)
     , deckglMapboxDependency()
@@ -125,7 +125,7 @@ addGeoArrowScatterplotLayer = function(
     map
     , htmlwidgets::JS(
       "function(el, x, data) {
-        // debugger;
+        debugger;
         map = this.getMap();
         addGeoArrowDeckglScatterplotLayer(map, data);
         addGlobeControl(map);
