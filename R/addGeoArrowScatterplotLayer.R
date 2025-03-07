@@ -80,6 +80,24 @@ addGeoArrowScatterplotLayer = function(
     , tooltip_options = tooltipOptions()
 ) {
 
+  UseMethod("addGeoArrowScatterplotLayer")
+
+}
+
+#' @export
+addGeoArrowScatterplotLayer.maplibregl = function(
+    map
+    , data
+    , layerId
+    , geom_column_name = attr(data, "sf_column")
+    , popup = NULL
+    , tooltip = NULL
+    , render_options = renderOptions()
+    , data_accessors = dataAccessors()
+    , popup_options = popupOptions()
+    , tooltip_options = tooltipOptions()
+) {
+
   if (isTRUE(popup)) {
     popup = names(data)
   } else if (isFALSE(popup)) {
@@ -146,3 +164,6 @@ addGeoArrowScatterplotLayer = function(
   return(map)
 
 }
+
+#' @export
+addGeoArrowScatterplotLayer.mapboxgl = addGeoArrowScatterplotLayer.maplibregl

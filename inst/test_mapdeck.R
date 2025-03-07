@@ -1,35 +1,61 @@
 library(mapdeck)
 library(sf)
+library(colourvalues)
+
+n <- 1e6
+dat <- data.frame(
+  id = 1:n,
+  x = runif(n, -180, 180),
+  y = runif(n, -60, 60)
+)
+dat$fillColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+)
+dat$lineColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+  , palette = "inferno"
+)
+dat$radius = sample.int(15, nrow(dat), replace = TRUE)
+dat$lineWidth = sample.int(5, nrow(dat), replace = TRUE)
+
 
 mapdeck() |>
   add_scatterplot(
-    data = capitals
-    , lat = "lat"
-    , lon = "lon"
-    , radius = 100000
-    , radius_max_pixels = 7
-    , fill_colour = "country"
-    , layer_id = "scatter_layer"
-    , tooltip = "capital"
+    data = dat
+    , lat = "y"
+    , lon = "x"
+    , radius = 100
+    , radius_min_pixels = 4
+    , radius_max_pixels = 15
+    , fill_colour = "fillColor"
+    , stroke_colour = "lineColor"
+    , stroke_width = "lineWidth"
   )
 
 
-caps = st_as_sf(capitals, coords = c("lon", "lat"), crs = "EPSG:4326")
+dat <- st_as_sf(
+  dat,
+  coords = c("x", "y"),
+  crs = 4326
+)
 
 path_layer = geoarrowDeckgl:::writeInterleavedGeoarrow(
-  caps
+  dat
   , "test"
   , "geometry"
 )
 
 map = mapdeck()
+# map$dependencies[[2]] = NULL
 
 map$dependencies = c(
   map$dependencies
   , geoarrowDeckgl:::arrowDependencies()
-  , geoarrowDeckgl:::deckglDataAttachmentSrc(path_layer, "test")
-  , geoarrowDeckgl:::geoarrowDeckglLayersDependencies()
   , geoarrowDeckgl:::geoarrowjsDependencies()
+  , geoarrowDeckgl:::geoarrowDeckglLayersDependencies()
+  , geoarrowDeckgl:::deckglDataAttachmentSrc(path_layer, "test")
   , geoarrowDeckgl:::helpersDependency()
 )
 
@@ -40,7 +66,7 @@ m = htmlwidgets::onRender(
   , htmlwidgets::JS(
     "function(el, x, data) {
         debugger;
-        map = el.id;
+        //map_id = el.id;
         let gaDeckLayers = window['@geoarrow/deck']['gl-layers'];
 
         let data_fl = document.getElementById(data.layerId + '-1-attachment');
@@ -50,7 +76,7 @@ m = htmlwidgets::onRender(
           .then(arrow_table => {
           //debugger;
             let geoArrowScatterplot = new gaDeckLayers.GeoArrowScatterplotLayer({
-              //map_id: map,
+              //map_id: el.id,
               id: data.layerId,
               data: arrow_table,
               getPosition: arrow_table.getChild(data.geom_column_name),
@@ -62,7 +88,9 @@ m = htmlwidgets::onRender(
               getRadius: 7,
             })
             debugger;
-            md_update_layer(map, data.layerId, geoArrowScatterplot);
+            //let map = window[el.id+'map'];
+            //map.setProps({ layers: [geoArrowScatterplot] });
+            md_update_layer(el.id, data.layerId, geoArrowScatterplot);
           })
 
           //debugger;
