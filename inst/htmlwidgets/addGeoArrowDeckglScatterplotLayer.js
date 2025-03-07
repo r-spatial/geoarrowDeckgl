@@ -40,6 +40,43 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
         // interactivity
         pickable: true,
 
+        onClick: (info, event) => {
+          // TODO: change cursor to "pointer" on hover
+          // event.target.style.cursor = "pointer"
+          if (opts.popup === null) {
+            return;
+          }
+          if (map.getLayoutProperty(opts.layerId, 'visibility') === 'none') {
+            return;
+          }
+          if (opts.popupOptions.length !== 0) {
+            //debugger;
+            let popups = document.getElementsByClassName('geoarrow-deckgl-popup');
+            if (popups.length > 0) {
+              for (let i = 0; i < popups.length; i++) {
+                popups[i].remove();
+              };
+            }
+            if (info.picked === false) {
+              return;
+            }
+
+            let popup = new maplibregl.Popup(
+              opts.popupOptions
+            )
+            .setLngLat(info.coordinate)
+            .setHTML(
+              objectToTable(
+                info.object,
+                className = "",
+                opts.popup,
+                opts.geom_column_name
+              )
+            );
+            popup.addTo(map);
+          }
+        },
+
         onHover: (info, event) => {
           // TODO: change cursor to "pointer" on hover
           // event.target.style.cursor = "pointer"
@@ -82,7 +119,7 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
         layers: [geoArrowScatterplot],
       });
       map.addControl(decklayer);
-
+/*
       if (opts.popup !== null) {
         map.on("click", (e) => {
           //debugger;
@@ -109,7 +146,7 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
           }
         });
       }
-
+*/
     });
 };
 
