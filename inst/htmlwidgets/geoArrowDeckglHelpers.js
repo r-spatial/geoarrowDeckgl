@@ -80,3 +80,49 @@ function attributeAccessor(index, data, property) {
   }
 }
 
+function clickFun (info, event, opts, type, map_class) {
+
+  let typeOptions = "popupOptions";
+  if (type === "tooltip") {
+    typeOptions = "tooltipOptions";
+  }
+
+  if (opts[type] === null) {
+    return;
+  }
+  if (map.getLayoutProperty(opts.layerId, 'visibility') === 'none') {
+    return;
+  }
+  if (info.picked === false) {
+    return;
+  }
+
+  if (opts[typeOptions].length !== 0) {
+  //debugger;
+    removePopups(opts[typeOptions].className);
+
+    let popup = new window[map_class].Popup(
+      opts[typeOptions]
+    )
+    .setLngLat(info.coordinate)
+    .setHTML(
+      objectToTable(
+        info.object,
+        className = "",
+        opts[type],
+        opts.geom_column_name
+      )
+    );
+
+    return popup;
+  }
+}
+
+function removePopups(className) {
+  let popups = document.getElementsByClassName(className);
+  if (popups.length > 0) {
+    for (let i = 0; i < popups.length; i++) {
+      popups[i].remove();
+    }
+  }
+}
