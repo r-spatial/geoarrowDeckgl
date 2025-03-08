@@ -14,7 +14,9 @@ addGeoArrowScatterplotLayer(
   render_options = renderOptions(),
   data_accessors = dataAccessors(),
   popup_options = popupOptions(),
-  tooltip_options = tooltipOptions()
+  tooltip_options = tooltipOptions(),
+  map_class = "maplibregl",
+  ...
 )
 }
 \arguments{
@@ -46,6 +48,8 @@ is supplied, then this will be shown for all features. If \code{NULL} (deafult) 
 \item{popup_options}{a list of \link{popupOptions}}
 
 \item{tooltip_options}{a list of \link{tooltipOptions}}
+
+\item{...}{currently not used.}
 }
 \description{
 Add a geoarrow based Deck.gl ScatterplotLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map.

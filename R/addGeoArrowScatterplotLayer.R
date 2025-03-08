@@ -19,6 +19,7 @@
 #' @param data_accessors a list of [dataAccessors]
 #' @param popup_options a list of [popupOptions]
 #' @param tooltip_options a list of [tooltipOptions]
+#' @param ... currently not used.
 #'
 #' @examples
 #' library(mapgl)
@@ -78,6 +79,8 @@ addGeoArrowScatterplotLayer = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
+    , map_class = "maplibregl"
+    , ...
 ) {
 
   UseMethod("addGeoArrowScatterplotLayer")
@@ -85,7 +88,7 @@ addGeoArrowScatterplotLayer = function(
 }
 
 #' @export
-addGeoArrowScatterplotLayer.maplibregl = function(
+addGeoArrowScatterplotLayer.default = function(
     map
     , data
     , layerId
@@ -96,6 +99,7 @@ addGeoArrowScatterplotLayer.maplibregl = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
+    , map_class = "maplibregl"
 ) {
 
   if (isTRUE(popup)) {
@@ -158,6 +162,7 @@ addGeoArrowScatterplotLayer.maplibregl = function(
       , dataAccessors = data_accessors
       , popupOptions = popup_options
       , tooltipOptions = tooltip_options
+      , map_class = map_class
     )
   )
 
@@ -166,4 +171,34 @@ addGeoArrowScatterplotLayer.maplibregl = function(
 }
 
 #' @export
-addGeoArrowScatterplotLayer.mapboxgl = addGeoArrowScatterplotLayer.maplibregl
+addGeoArrowScatterplotLayer.maplibregl = function(
+    map
+    , data
+    , ...
+    , map_class = "maplibregl"
+) {
+  addGeoArrowScatterplotLayer.default(
+    map
+    , data
+    , ...
+    , map_class = "maplibregl"
+  )
+}
+
+#' @export
+addGeoArrowScatterplotLayer.mapboxgl = function(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+  ) {
+  addGeoArrowScatterplotLayer.default(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+  )
+}
+
+
+
