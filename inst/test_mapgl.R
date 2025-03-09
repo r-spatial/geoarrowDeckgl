@@ -42,15 +42,6 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
 #   add_navigation_control(visualize_pitch = TRUE) |>
 #   add_layers_control(collapsible = TRUE, layers = c("test"))
 
-### TODO: figure out how to add to mapdeck/deckgl map. Seems fundamentally different
-### from mapgl, but should be easy enough given it's the same framework
-###
-### More generally, should we provide methods for all possible rendering framweorks?
-### mapgl (maplibregl/mapboxgl), mapdeck, deckgl, leaflet???
-
-# m = mapdeck::mapdeck()
-# m = add_basemap(deckgl(), style = use_carto_style())
-
 m |>
   geoarrowDeckgl:::addGeoArrowScatterplotLayer(
     data = dat
@@ -65,7 +56,7 @@ m |>
     )
     , popup = TRUE
     , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = TRUE
+    , tooltip = FALSE
     # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
   )
 

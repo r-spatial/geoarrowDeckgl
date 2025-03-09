@@ -100,6 +100,7 @@ addGeoArrowScatterplotLayer.default = function(
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
     , map_class = "maplibregl"
+    , js_code
 ) {
 
   if (isTRUE(popup)) {
@@ -112,6 +113,29 @@ addGeoArrowScatterplotLayer.default = function(
     tooltip = names(data)
   } else if (isFALSE(tooltip)) {
     tooltip = NULL
+  }
+
+  if (missing(js_code)) {
+    js_code = "function(el, x, data) {
+        debugger;
+        map = this.getMap();
+        let data_fl = document.getElementById(data.layerId + '-1-attachment');
+
+        fetch(data_fl.href)
+          .then(result => Arrow.tableFromIPC(result))
+          .then(arrow_table => {
+            let geoArrowScatterplot = scatterplot(map, data, arrow_table);
+
+           // TODO: adjust to work with mapdeck
+            var decklayer = new deck.MapboxOverlay({
+              interleaved: true,
+              layers: [geoArrowScatterplot],
+            });
+            map.addControl(decklayer);
+
+          });
+        addGlobeControl(map);
+      }"
   }
 
   path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
@@ -139,20 +163,13 @@ addGeoArrowScatterplotLayer.default = function(
     , if (!inherits(map, "mapdeck")) deckglDependencies()
     , geoarrowDeckglLayersDependencies()
     , deckglDataAttachmentSrc(path_layer, layerId)
-    , deckglMapboxDependency()
+    # , deckglMapboxDependency()
     , helpersDependency()
   )
 
   map = htmlwidgets::onRender(
     map
-    , htmlwidgets::JS(
-      "function(el, x, data) {
-        debugger;
-        map = this.getMap();
-        addGeoArrowDeckglScatterplotLayer(map, data);
-        addGlobeControl(map);
-      }"
-    )
+    , htmlwidgets::JS(js_code)
     , data = list(
       geom_column_name = geom_column_name
       , layerId = layerId
@@ -201,4 +218,33 @@ addGeoArrowScatterplotLayer.mapboxgl = function(
 }
 
 
+#' @export
+addGeoArrowScatterplotLayer.mapdeck = function(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+) {
 
+  js_code =
+    "function(el, x, data) {
+      debugger;
+        let data_fl = document.getElementById(data.layerId + '-1-attachment');
+
+        fetch(data_fl.href)
+          .then(result => Arrow.tableFromIPC(result))
+          .then(arrow_table => {
+            let geoArrowScatterplot = scatterplot(x, data, arrow_table);
+
+           md_update_layer(el.id, data.layerId, geoArrowScatterplot);
+          });
+      }"
+
+  addGeoArrowScatterplotLayer.default(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+    , js_code = js_code
+  )
+}
