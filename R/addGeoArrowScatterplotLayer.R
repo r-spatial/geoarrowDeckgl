@@ -134,20 +134,6 @@ addGeoArrowScatterplotLayer.default = function(
             map.addControl(decklayer);
 
           });
-        addGlobeControl(map);
-
-        // as long as globe view is not fully supported by deckgl, disable dragRotate
-        disableDragRotate = function() {
-          if (map.getProjection().type === 'globe') {
-            map.dragRotate.disable();
-          }
-          if (map.getProjection().type === 'mercator') {
-            map.dragRotate.enable();
-          }
-        }
-
-        let glbbtn = document.getElementsByClassName('maplibregl-ctrl-globe')[0]
-        glbbtn.addEventListener('click', disableDragRotate);
       }"
   }
 
