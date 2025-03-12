@@ -87,8 +87,8 @@ addGeoArrowScatterplotLayer = function(
 
 }
 
-#' @export
-addGeoArrowScatterplotLayer.default = function(
+
+addGeoArrowScatterplotLayer_default = function(
     map
     , data
     , layerId
@@ -193,7 +193,7 @@ addGeoArrowScatterplotLayer.maplibregl = function(
     , ...
     , map_class = "maplibregl"
 ) {
-  addGeoArrowScatterplotLayer.default(
+  addGeoArrowScatterplotLayer_default(
     map
     , data
     , ...
@@ -208,7 +208,7 @@ addGeoArrowScatterplotLayer.mapboxgl = function(
     , ...
     , map_class = "mapboxgl"
   ) {
-  addGeoArrowScatterplotLayer.default(
+  addGeoArrowScatterplotLayer_default(
     map
     , data
     , ...
@@ -239,7 +239,7 @@ addGeoArrowScatterplotLayer.mapdeck = function(
           });
       }"
 
-  addGeoArrowScatterplotLayer.default(
+  addGeoArrowScatterplotLayer_default(
     map
     , data
     , ...
