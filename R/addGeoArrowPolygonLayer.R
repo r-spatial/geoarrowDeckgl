@@ -1,10 +1,11 @@
-#' Add a geoarrow based Deck.gl PolygonLayer to a [mapgl::maplibre()] map.
+#' Add Deck.gl PolygonLayer to a [mapgl::maplibre()] or [mapgl::mapboxgl()] map
+#' using blazing fast [nanoarrow::write_nanoarrow()] data transfer.
 #'
-#' @param map the [mapgl::maplibre()] map to add the layer to.
+#' @param map the [mapgl::maplibre()] or [mapgl::mapboxgl()] map to add the layer to.
 #' @param data a sf `(MULTI)POLYGON` object.
 #' @param layerId the layer id.
 #' @param geom_column_name the name of the geometry column of the sf object.
-#'  It is inferred automatically if only one is present.
+#' It is inferred automatically if only one is present.
 #' @param popup should a popup be contructed? If `TRUE`, will create a popup fromm all
 #' available attributes of the feature. Can also be a character vector of column
 #' names, on which case the popup will include only those columns. If a single character
@@ -19,6 +20,7 @@
 #' @param data_accessors a list of [dataAccessors]
 #' @param popup_options a list of [popupOptions]
 #' @param tooltip_options a list of [tooltipOptions]
+#' @param ... currently not used.
 #'
 #' @export
 addGeoArrowPolygonLayer = function(
@@ -32,14 +34,14 @@ addGeoArrowPolygonLayer = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
+    , ...
 ) {
 
   UseMethod("addGeoArrowPolygonLayer")
 
 }
 
-#' @export
-addGeoArrowPolygonLayer.maplibregl = function(
+addGeoArrowPolygonLayer_default = function(
     map
     , data
     , layerId
@@ -50,7 +52,21 @@ addGeoArrowPolygonLayer.maplibregl = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
+    , map_class = "maplibregl"
+    , js_code
 ) {
+
+  # data = try(
+  #   sf::st_as_sf(data)
+  #   , silent = TRUE
+  # )
+  #
+  # if (inherits(data, "try-error")) {
+  #   stop(
+  #     "cannot convert data to sf"
+  #     , call. = FALSE
+  #   )
+  # }
 
   if (isTRUE(popup)) {
     popup = names(data)
@@ -62,6 +78,16 @@ addGeoArrowPolygonLayer.maplibregl = function(
     tooltip = names(data)
   } else if (isFALSE(tooltip)) {
     tooltip = NULL
+  }
+
+  if (missing(js_code)) {
+    js_code = htmlwidgets::JS(
+      "function(el, x, data) {
+        map = this.getMap();
+        addGeoArrowDeckglPolygonLayer(map, data);
+        addGlobeControl(map);
+      }"
+    )
   }
 
   path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
@@ -86,10 +112,10 @@ addGeoArrowPolygonLayer.maplibregl = function(
     )
     , arrowDependencies()
     , geoarrowjsDependencies()
-    , deckglDependencies()
+    , if (!inherits(map, "mapdeck")) deckglDependencies()
     , geoarrowDeckglLayersDependencies()
     , deckglDataAttachmentSrc(path_layer, layerId)
-    , deckglMapboxDependency()
+    # , deckglMapboxDependency()
     , helpersDependency()
   )
 
@@ -111,6 +137,7 @@ addGeoArrowPolygonLayer.maplibregl = function(
       , dataAccessors = data_accessors
       , popupOptions = popup_options
       , tooltipOptions = tooltip_options
+      , map_class = map_class
     )
   )
 
@@ -119,4 +146,31 @@ addGeoArrowPolygonLayer.maplibregl = function(
 }
 
 #' @export
-addGeoArrowPolygonLayer.mapboxgl = addGeoArrowPolygonLayer.maplibregl
+addGeoArrowPolygonLayer.maplibregl = function(
+    map
+    , data
+    , ...
+    , map_class = "maplibregl"
+) {
+  addGeoArrowPolygonLayer_default(
+    map
+    , data
+    , ...
+    , map_class = "maplibregl"
+  )
+}
+
+#' @export
+addGeoArrowPolygonLayer.mapboxgl = function(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+) {
+  addGeoArrowPolygonLayer_default(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+  )
+}

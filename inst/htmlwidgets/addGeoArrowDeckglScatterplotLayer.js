@@ -5,9 +5,8 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
   fetch(data_fl.href)
     .then(result => Arrow.tableFromIPC(result))
     .then(arrow_table => {
-      let geoArrowScatterplot = scatterplot(map, opts, arrow_table);
+      let geoArrowScatterplot = scatterplotLayer(map, opts, arrow_table);
 
-      // TODO: adjust to work with mapdeck
       var decklayer = new deck.MapboxOverlay({
         interleaved: true,
         layers: [geoArrowScatterplot],
@@ -18,7 +17,7 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
 };
 
 
-scatterplot = function(map, opts, arrow_table) {
+scatterplotLayer = function(map, opts, arrow_table) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
 
   let layer = new gaDeckLayers.GeoArrowScatterplotLayer({

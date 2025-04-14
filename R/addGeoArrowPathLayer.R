@@ -1,6 +1,7 @@
-#' Add a geoarrow based Deck.gl PathLayer to a [mapgl::maplibre()] map.
+#' Add Deck.gl PathLayer to a [mapgl::maplibre()] or [mapgl::mapboxgl()] map
+#' using blazing fast [nanoarrow::write_nanoarrow()] data transfer.
 #'
-#' @param map the [mapgl::maplibre()] map to add the layer to.
+#' @param map the [mapgl::maplibre()] or [mapgl::mapboxgl()] map to add the layer to.
 #' @param data a sf `(MULTI)LINESTRING` object.
 #' @param layerId the layer id.
 #' @param geom_column_name the name of the geometry column of the sf object.
@@ -19,6 +20,7 @@
 #' @param data_accessors a list of [dataAccessors]
 #' @param popup_options a list of [popupOptions]
 #' @param tooltip_options a list of [tooltipOptions]
+#' @param ... currently not used.
 #'
 #' @export
 addGeoArrowPathLayer = function(
@@ -32,14 +34,14 @@ addGeoArrowPathLayer = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
+    , ...
 ) {
 
   UseMethod("addGeoArrowPathLayer")
 
 }
 
-#' @export
-addGeoArrowPathLayer.maplibregl = function(
+addGeoArrowPathLayer_default = function(
     map
     , data
     , layerId
@@ -50,6 +52,8 @@ addGeoArrowPathLayer.maplibregl = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
+    , map_class = "maplibregl"
+    , js_code
 ) {
 
   if (isTRUE(popup)) {
@@ -62,6 +66,16 @@ addGeoArrowPathLayer.maplibregl = function(
     tooltip = names(data)
   } else if (isFALSE(tooltip)) {
     tooltip = NULL
+  }
+
+  if (missing(js_code)) {
+    js_code = htmlwidgets::JS(
+      "function(el, x, data) {
+        map = this.getMap();
+        addGeoArrowDeckglPathLayer(map, data);
+        addGlobeControl(map);
+      }"
+    )
   }
 
   path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
@@ -86,22 +100,16 @@ addGeoArrowPathLayer.maplibregl = function(
     )
     , arrowDependencies()
     , geoarrowjsDependencies()
-    , deckglDependencies()
+    , if (!inherits(map, "mapdeck")) deckglDependencies()
     , geoarrowDeckglLayersDependencies()
     , deckglDataAttachmentSrc(path_layer, layerId)
-    , deckglMapboxDependency()
+    # , deckglMapboxDependency()
     , helpersDependency()
   )
 
   map = htmlwidgets::onRender(
     map
-    , htmlwidgets::JS(
-      "function(el, x, data) {
-        map = this.getMap();
-        addGeoArrowDeckglPathLayer(map, data);
-        addGlobeControl(map);
-      }"
-    )
+    , htmlwidgets::JS(js_code)
     , data = list(
       geom_column_name = geom_column_name
       , layerId = layerId
@@ -111,9 +119,40 @@ addGeoArrowPathLayer.maplibregl = function(
       , dataAccessors = data_accessors
       , popupOptions = popup_options
       , tooltipOptions = tooltip_options
+      , map_class = map_class
     )
   )
 
   return(map)
 
+}
+
+#' @export
+addGeoArrowPathLayer.maplibregl = function(
+    map
+    , data
+    , ...
+    , map_class = "maplibregl"
+) {
+  addGeoArrowPathLayer_default(
+    map
+    , data
+    , ...
+    , map_class = "maplibregl"
+  )
+}
+
+#' @export
+addGeoArrowPathLayer.mapboxgl = function(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+) {
+  addGeoArrowPathLayer_default(
+    map
+    , data
+    , ...
+    , map_class = "mapboxgl"
+  )
 }

@@ -1,6 +1,7 @@
-#' Add a geoarrow based Deck.gl ScatterplotLayer to a [mapgl::maplibre()] map.
+#' Add Deck.gl ScatterplotLayer to a [mapgl::maplibre()] or [mapgl::mapboxgl()] map
+#' using blazing fast [nanoarrow::write_nanoarrow()] data transfer.
 #'
-#' @param map the [mapgl::maplibre()] map to add the layer to.
+#' @param map the [mapgl::maplibre()] or [mapgl::mapboxgl()] map to add the layer to.
 #' @param data a sf `(MULTI)POINT` object.
 #' @param layerId the layer id.
 #' @param geom_column_name the name of the geometry column of the sf object.
@@ -79,7 +80,6 @@ addGeoArrowScatterplotLayer = function(
     , data_accessors = dataAccessors()
     , popup_options = popupOptions()
     , tooltip_options = tooltipOptions()
-    , map_class = "maplibregl"
     , ...
 ) {
 
@@ -103,6 +103,19 @@ addGeoArrowScatterplotLayer_default = function(
     , js_code
 ) {
 
+  ### TODO: we need a way to render geometries only...!!! sfcs or e.g. wk::...
+  # data = try(
+  #   sf::st_as_sf(data)
+  #   , silent = TRUE
+  # )
+  #
+  # if (inherits(data, "try-error")) {
+  #   stop(
+  #     "cannot convert data to sf"
+  #     , call. = FALSE
+  #   )
+  # }
+
   if (isTRUE(popup)) {
     popup = names(data)
   } else if (isFALSE(popup)) {
@@ -116,25 +129,13 @@ addGeoArrowScatterplotLayer_default = function(
   }
 
   if (missing(js_code)) {
-    js_code = "function(el, x, data) {
-        debugger;
+    js_code = htmlwidgets::JS(
+      "function(el, x, data) {
         map = this.getMap();
-        let data_fl = document.getElementById(data.layerId + '-1-attachment');
-
-        fetch(data_fl.href)
-          .then(result => Arrow.tableFromIPC(result))
-          .then(arrow_table => {
-            let geoArrowScatterplot = scatterplot(map, data, arrow_table);
-
-           // TODO: adjust to work with mapdeck
-            var decklayer = new deck.MapboxOverlay({
-              interleaved: true,
-              layers: [geoArrowScatterplot],
-            });
-            map.addControl(decklayer);
-
-          });
+        addGeoArrowDeckglScatterplotLayer(map, data);
+        addGlobeControl(map);
       }"
+    )
   }
 
   path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
@@ -217,33 +218,33 @@ addGeoArrowScatterplotLayer.mapboxgl = function(
 }
 
 
-#' @export
-addGeoArrowScatterplotLayer.mapdeck = function(
-    map
-    , data
-    , ...
-    , map_class = "mapboxgl"
-) {
-
-  js_code =
-    "function(el, x, data) {
-      debugger;
-        let data_fl = document.getElementById(data.layerId + '-1-attachment');
-
-        fetch(data_fl.href)
-          .then(result => Arrow.tableFromIPC(result))
-          .then(arrow_table => {
-            let geoArrowScatterplot = scatterplot(x, data, arrow_table);
-
-           md_update_layer(el.id, data.layerId, geoArrowScatterplot);
-          });
-      }"
-
-  addGeoArrowScatterplotLayer_default(
-    map
-    , data
-    , ...
-    , map_class = "mapboxgl"
-    , js_code = js_code
-  )
-}
+#' #' @export
+#' addGeoArrowScatterplotLayer.mapdeck = function(
+#'     map
+#'     , data
+#'     , ...
+#'     , map_class = "mapboxgl"
+#' ) {
+#'
+#'   js_code =
+#'     "function(el, x, data) {
+#'       debugger;
+#'         let data_fl = document.getElementById(data.layerId + '-1-attachment');
+#'
+#'         fetch(data_fl.href)
+#'           .then(result => Arrow.tableFromIPC(result))
+#'           .then(arrow_table => {
+#'             let geoArrowScatterplot = scatterplot(x, data, arrow_table);
+#'
+#'            md_update_layer(el.id, data.layerId, geoArrowScatterplot);
+#'           });
+#'       }"
+#'
+#'   addGeoArrowScatterplotLayer_default(
+#'     map
+#'     , data
+#'     , ...
+#'     , map_class = "mapboxgl"
+#'     , js_code = js_code
+#'   )
+#' }

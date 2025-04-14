@@ -2,7 +2,8 @@
 % Please edit documentation in R/addGeoArrowPolygonLayer.R
 \name{addGeoArrowPolygonLayer}
 \alias{addGeoArrowPolygonLayer}
-\title{Add a geoarrow based Deck.gl PolygonLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map.}
+\title{Add Deck.gl PolygonLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}} map
+using blazing fast \code{\link[nanoarrow:read_nanoarrow]{nanoarrow::write_nanoarrow()}} data transfer.}
 \usage{
 addGeoArrowPolygonLayer(
   map,
@@ -14,11 +15,12 @@ addGeoArrowPolygonLayer(
   render_options = renderOptions(),
   data_accessors = dataAccessors(),
   popup_options = popupOptions(),
-  tooltip_options = tooltipOptions()
+  tooltip_options = tooltipOptions(),
+  ...
 )
 }
 \arguments{
-\item{map}{the \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map to add the layer to.}
+\item{map}{the \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}} map to add the layer to.}
 
 \item{data}{a sf \verb{(MULTI)POLYGON} object.}
 
@@ -46,7 +48,10 @@ is supplied, then this will be shown for all features. If \code{NULL} (deafult) 
 \item{popup_options}{a list of \link{popupOptions}}
 
 \item{tooltip_options}{a list of \link{tooltipOptions}}
+
+\item{...}{currently not used.}
 }
 \description{
-Add a geoarrow based Deck.gl PolygonLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map.
+Add Deck.gl PolygonLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}} map
+using blazing fast \code{\link[nanoarrow:read_nanoarrow]{nanoarrow::write_nanoarrow()}} data transfer.
 }

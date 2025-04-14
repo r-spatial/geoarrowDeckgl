@@ -57,8 +57,8 @@ m |>
     )
     , popup = TRUE
     , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = FALSE
-    # , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
+    , tooltip = TRUE
+    , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
   )
 
 
@@ -86,21 +86,28 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   add_layers_control(collapsible = TRUE, layers = c("test")) |>
   fit_bounds(unname(st_bbox(dat)), animate = FALSE)
 
+# m = mapboxgl(
+#   style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+#   , projection = "mercator"
+#   ) |>
+#   add_navigation_control(visualize_pitch = TRUE) |>
+#   add_layers_control(collapsible = TRUE, layers = c("test"))
+
 m |>
   geoarrowDeckgl:::addGeoArrowPolygonLayer(
     data = dat
     , layerId = "test"
     , geom_column_name = attr(dat, "sf_column")
+    , render_options = geoarrowDeckgl:::renderOptions(
+      extruded = FALSE
+    )
+    , data_accessors = geoarrowDeckgl:::dataAccessors(
+      getFillColor = "fillColor"
+      , getLineColor = "lineColor"
+      , getLineWidth = 1 # "lineWidth"
+      , getElevation = "elevation"
+    )
     , popup = TRUE
-    # , render_options = geoarrowDeckgl:::renderOptions(
-    #   extruded = TRUE
-    # )
-    # , data_accessors = geoarrowDeckgl:::dataAccessors(
-    #   getFillColor = "fillColor"
-    #   , getLineColor = "lineColor"
-    #   , getLineWidth = 1 # "lineWidth"
-    #   , getElevation = "elevation"
-    # )
   )
 
 
@@ -121,6 +128,13 @@ m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.j
   add_navigation_control(visualize_pitch = TRUE) |>
   add_layers_control(collapsible = TRUE, layers = c("test"))
 
+# m = mapboxgl(
+#   style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+#   , projection = "mercator"
+#   ) |>
+#   add_navigation_control(visualize_pitch = TRUE) |>
+#   add_layers_control(collapsible = TRUE, layers = c("test"))
+
 m |>
   geoarrowDeckgl:::addGeoArrowPathLayer(
     data = dat
@@ -136,6 +150,6 @@ m |>
       , getColor = "lineColor"
     )
     , popup = TRUE
-    , tooltip = FALSE
+    , tooltip = TRUE
   )
 

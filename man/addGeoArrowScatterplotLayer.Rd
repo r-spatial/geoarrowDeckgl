@@ -2,7 +2,8 @@
 % Please edit documentation in R/addGeoArrowScatterplotLayer.R
 \name{addGeoArrowScatterplotLayer}
 \alias{addGeoArrowScatterplotLayer}
-\title{Add a geoarrow based Deck.gl ScatterplotLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map.}
+\title{Add Deck.gl ScatterplotLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}} map
+using blazing fast \code{\link[nanoarrow:read_nanoarrow]{nanoarrow::write_nanoarrow()}} data transfer.}
 \usage{
 addGeoArrowScatterplotLayer(
   map,
@@ -15,12 +16,11 @@ addGeoArrowScatterplotLayer(
   data_accessors = dataAccessors(),
   popup_options = popupOptions(),
   tooltip_options = tooltipOptions(),
-  map_class = "maplibregl",
   ...
 )
 }
 \arguments{
-\item{map}{the \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map to add the layer to.}
+\item{map}{the \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}} map to add the layer to.}
 
 \item{data}{a sf \verb{(MULTI)POINT} object.}
 
@@ -52,7 +52,8 @@ is supplied, then this will be shown for all features. If \code{NULL} (deafult) 
 \item{...}{currently not used.}
 }
 \description{
-Add a geoarrow based Deck.gl ScatterplotLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} map.
+Add Deck.gl ScatterplotLayer to a \code{\link[mapgl:maplibre]{mapgl::maplibre()}} or \code{\link[mapgl:mapboxgl]{mapgl::mapboxgl()}} map
+using blazing fast \code{\link[nanoarrow:read_nanoarrow]{nanoarrow::write_nanoarrow()}} data transfer.
 }
 \examples{
 library(mapgl)
