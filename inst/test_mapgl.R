@@ -153,3 +153,61 @@ m |>
     , tooltip = TRUE
   )
 
+
+### point cloud =========================
+n = 5e4
+dat = data.frame(
+  id = 1:n
+  , x = runif(n, -180, 180)
+  , y = runif(n, -60, 60)
+  , z = runif(n, 1000, 5000)
+)
+dat = st_as_sf(
+  dat
+  , coords = c("x", "y", "z")
+  , crs = 4326
+)
+dat$fillColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+)
+dat$lineColor = color_values(
+  rnorm(nrow(dat))
+  , alpha = sample.int(255, nrow(dat), replace = TRUE)
+  , palette = "inferno"
+)
+dat$radius = sample.int(15, nrow(dat), replace = TRUE)
+dat$lineWidth = sample.int(5, nrow(dat), replace = TRUE)
+
+options(viewer = NULL)
+
+m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
+  add_navigation_control(visualize_pitch = TRUE) |>
+  add_layers_control(collapsible = TRUE, layers = c("test")) |>
+  add_globe_control()
+
+# m = mapboxgl(
+#   style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+#   , projection = "mercator"
+#   ) |>
+#   add_navigation_control(visualize_pitch = TRUE) |>
+#   add_layers_control(collapsible = TRUE, layers = c("test"))
+
+m |>
+  geoarrowDeckgl:::addGeoArrowPointCloudLayer(
+    data = dat
+    , layerId = "test"
+    , geom_column_name = attr(dat, "sf_column")
+    , render_options = geoarrowDeckgl:::renderOptions()
+    , data_accessors = geoarrowDeckgl:::dataAccessors(
+      getRadius = "radius"
+      , getFillColor = "fillColor"
+      , getLineWidth = "lineWidth"
+      , getLineColor = "lineColor"
+    )
+    , popup = TRUE
+    , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
+    , tooltip = TRUE
+    , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
+  )
+

@@ -41,7 +41,7 @@ dat <- st_as_sf(
   crs = 4326
 )
 
-path_layer = geoarrowDeckgl:::writeInterleavedGeoarrow(
+path_layer = geoarrowDeckgl:::writeGeoarrow(
   dat
   , "test"
   , "geometry"

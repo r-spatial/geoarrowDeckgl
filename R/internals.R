@@ -8,7 +8,7 @@ writeGeoarrow = function(
   layer_path = tempfile()
   dir.create(layer_path)
   layer_path = paste0(layer_path, "/", layerId, "_layer.arrow")
-  data_schema = nanoarrow::infer_nanoarrow_schema(data)
+  data_schema = nanoarrow::infer_nanoarrow_schema(data[1, ])
 
   if (interleaved) {
     geom_type = geoarrow::infer_geoarrow_schema(data[1, ]) #, coord_type = "INTERLEAVED")
