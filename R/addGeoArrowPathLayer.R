@@ -73,12 +73,11 @@ addGeoArrowPathLayer_default = function(
       "function(el, x, data) {
         map = this.getMap();
         addGeoArrowDeckglPathLayer(map, data);
-        addGlobeControl(map);
       }"
     )
   }
 
-  path_layer = writeInterleavedGeoarrow(data, layerId, geom_column_name)
+  path_layer = writeGeoarrow(data, layerId, geom_column_name)
 
   map$dependencies = c(
     map$dependencies
