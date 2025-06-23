@@ -37,6 +37,7 @@ addGeoArrowPolygonLayer = function(
     , ...
 ) {
 
+  stopifnot(requireNamespace("geoarrow"))
   UseMethod("addGeoArrowPolygonLayer")
 
 }

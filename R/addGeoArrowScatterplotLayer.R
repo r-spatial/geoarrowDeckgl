@@ -83,6 +83,7 @@ addGeoArrowScatterplotLayer = function(
     , ...
 ) {
 
+  stopifnot(requireNamespace("geoarrow"))
   UseMethod("addGeoArrowScatterplotLayer")
 
 }

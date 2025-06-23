@@ -37,6 +37,7 @@ addGeoArrowPathLayer = function(
     , ...
 ) {
 
+  stopifnot(requireNamespace("geoarrow"))
   UseMethod("addGeoArrowPathLayer")
 
 }

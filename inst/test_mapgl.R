@@ -34,7 +34,7 @@ options(viewer = NULL)
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
   add_navigation_control(visualize_pitch = TRUE) |>
   add_layers_control(collapsible = TRUE, layers = c("test")) |>
-  mapgl::add_globe_control()
+  add_globe_control()
 
 # m = mapboxgl(
 #   style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
