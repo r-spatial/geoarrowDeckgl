@@ -6,7 +6,7 @@ library(colourvalues)
 
 
 ### points =========================
-n = 5e4
+n = 5e5
 dat = data.frame(
   id = 1:n
   , x = runif(n, -180, 180)
@@ -34,7 +34,7 @@ options(viewer = NULL)
 m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
   add_navigation_control(visualize_pitch = TRUE) |>
   add_layers_control(collapsible = TRUE, layers = c("test")) |>
-  add_globe_control()
+  mapgl::add_globe_control()
 
 # m = mapboxgl(
 #   style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
@@ -55,9 +55,9 @@ m |>
       , getLineWidth = "lineWidth"
       , getLineColor = "lineColor"
     )
-    , popup = TRUE
+    , popup = FALSE
     , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")
-    , tooltip = TRUE
+    , tooltip = FALSE
     , tooltip_options = geoarrowDeckgl:::tooltipOptions(anchor = "top-left")
   )
 

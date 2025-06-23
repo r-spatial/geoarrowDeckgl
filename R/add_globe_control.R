@@ -9,7 +9,6 @@
 #' maplibre() |>
 #'   add_globe_control()
 #'
-#' @export
 add_globe_control <- function(map, position = "top-right") {
 
   if (inherits(map, "mapboxgl")) {
