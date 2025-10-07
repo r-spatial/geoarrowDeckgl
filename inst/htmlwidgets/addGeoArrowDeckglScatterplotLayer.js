@@ -5,14 +5,14 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
   fetch(data_fl.href)
     .then(result => Arrow.tableFromIPC(result))
     .then(arrow_table => {
+
       let geoArrowScatterplot = scatterplotLayer(map, opts, arrow_table);
 
-      var decklayer = new deck.MapboxOverlay({
+      let decklayer = new deck.MapboxOverlay({
         interleaved: true,
         layers: [geoArrowScatterplot],
       });
       map.addControl(decklayer);
-
     });
 };
 

@@ -2,7 +2,7 @@ writeGeoarrow = function(
     data
     , layerId
     , geom_column_name
-    , interleaved = FALSE
+    , interleaved = TRUE
 ) {
 
   layer_path = tempfile()
@@ -11,8 +11,11 @@ writeGeoarrow = function(
   data_schema = nanoarrow::infer_nanoarrow_schema(data[1, ])
 
   if (interleaved) {
-    geom_type = geoarrow::infer_geoarrow_schema(data[1, ]) #, coord_type = "INTERLEAVED")
-    data_schema = nanoarrow::infer_nanoarrow_schema(data)
+    geom_type = geoarrow::infer_geoarrow_schema(
+      data[1, ]
+      , coord_type = "INTERLEAVED"
+    )
+    # data_schema = nanoarrow::infer_nanoarrow_schema(data)
     data_schema$children[[geom_column_name]] = geom_type
   }
 

@@ -90,17 +90,17 @@ helpersDependency = function() {
 
 
 ## deck.gl js mapbox ===========================================================
-# deckglMapboxDependency = function() {
-#   fldr = system.file("htmlwidgets/lib/deckgl-mapbox", package = "geoarrowDeckgl")
-#   list(
-#     htmltools::htmlDependency(
-#       "deck.gl"
-#       , readLines(file.path(fldr, "version.txt"))
-#       , src = c(
-#         # href = "https://cdn.jsdelivr.net/npm/@deck.gl/mapbox@9.1.0/dist/"
-#         fldr
-#       )
-#       , script = "mapbox-overlay.min.js"
-#     )
-#   )
-# }
+deckglMapboxDependency = function() {
+  fldr = system.file("htmlwidgets/lib/deckgl-mapbox", package = "geoarrowDeckgl")
+  list(
+    htmltools::htmlDependency(
+      "deck.gl-mapbox-overlay"
+      , readLines(file.path(fldr, "version.txt"))
+      , src = c(
+        # href = "https://cdn.jsdelivr.net/npm/@deck.gl/mapbox@9.1.0/dist/"
+        fldr
+      )
+      , script = c("dist.min.js")
+    )
+  )
+}

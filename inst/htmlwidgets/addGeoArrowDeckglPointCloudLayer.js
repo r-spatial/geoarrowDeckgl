@@ -8,7 +8,7 @@ addGeoArrowDeckglPointCloudLayer = function(map, opts) {
       let geoArrowPointCloud = pointCloudLayer(map, opts, arrow_table);
 
       var decklayer = new deck.MapboxOverlay({
-        interleaved: true,
+        interleaved: false,
         layers: [geoArrowPointCloud],
       });
       map.addControl(decklayer);

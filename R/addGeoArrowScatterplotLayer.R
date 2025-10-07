@@ -162,8 +162,8 @@ addGeoArrowScatterplotLayer_default = function(
     , geoarrowjsDependencies()
     , if (!inherits(map, "mapdeck")) deckglDependencies()
     , geoarrowDeckglLayersDependencies()
+    , deckglMapboxDependency()
     , deckglDataAttachmentSrc(path_layer, layerId)
-    # , deckglMapboxDependency()
     , helpersDependency()
   )
 

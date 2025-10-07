@@ -5,7 +5,7 @@ BASEURL="https://cdn.jsdelivr.net/npm/@deck.gl/mapbox"
 # get (latest) dep
 # see https://stackoverflow.com/a/38795701/2555983 for --backups
 # basically keeps the last one as backup
-wget --backups=1 ${BASEURL}/dist/mapbox-overlay.min.js
+wget --backups=1 ${BASEURL}/dist.min.js
 rm *.js.1
 
 # get (latest) version
