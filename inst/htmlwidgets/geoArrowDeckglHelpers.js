@@ -114,6 +114,10 @@ function clickFun (info, event, opts, type, map_class) {
       )
     );
 
+    if (type === "tooltip") {
+      popup._content.style.setProperty("pointer-events", "none");
+    };
+//debugger;
     return popup;
   }
 }
