@@ -51,6 +51,10 @@ scatterplotLayer = function(map, opts, arrow_table) {
 
     // interactivity
     pickable: true,
+    parameters: {
+      //depthTest: false,
+      depthCompare: "always"
+    },
 
     onClick: (info, event) => {
         let popup = clickFun(info, event, opts, "popup", opts.map_class);
