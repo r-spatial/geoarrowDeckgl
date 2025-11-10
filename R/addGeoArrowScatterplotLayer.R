@@ -102,6 +102,7 @@ addGeoArrowScatterplotLayer_default = function(
     , tooltip_options = tooltipOptions()
     , map_class = "maplibregl"
     , js_code
+    , ...
 ) {
 
   ### TODO: we need a way to render geometries only...!!! sfcs or e.g. wk::...
@@ -180,6 +181,7 @@ addGeoArrowScatterplotLayer_default = function(
       , popupOptions = popup_options
       , tooltipOptions = tooltip_options
       , map_class = map_class
+      , ...
     )
   )
 
