@@ -19,7 +19,7 @@ addGeoArrowDeckglScatterplotLayer = function(map, opts) {
 
 scatterplotLayer = function(map, opts, arrow_table) {
   let gaDeckLayers = window["@geoarrow/deck"]["gl-layers"];
-debugger;
+
   let layer = new gaDeckLayers.GeoArrowScatterplotLayer({
     id: opts.layerId,
     data: arrow_table,
@@ -67,6 +67,7 @@ debugger;
     },
 
     onHover: (info, event) => {
+      //debugger;
         if (info.picked === false) {
           removePopups("geoarrow-deckgl-tooltip");
         }
@@ -74,6 +75,20 @@ debugger;
         if (popup !== undefined) {
           popup.addTo(map);
         }
+        // unfortunately the following does not switch between globe and mercator
+        // mode for the tooltips. It doesn't expand the pickable area to the
+        // mercator area.
+        /*
+        let globeEnabled = document.getElementsByClassName("maplibregl-ctrl-globe-enabled");
+        if (globeEnabled.length === 1) {
+          Object.assign(info.sourceLayer.props.parameters, {cullMode: 'back'});
+          console.log(info.sourceLayer.props.parameters);
+        }
+        if (globeEnabled.length === 0) {
+          Object.assign(info.sourceLayer.props.parameters, {cullMode: 'none'});
+          console.log(info.sourceLayer.props.parameters);
+        }
+        */
     },
 
   });
