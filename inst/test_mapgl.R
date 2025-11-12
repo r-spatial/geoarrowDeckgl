@@ -31,7 +31,10 @@ dat$lineWidth = sample.int(5, nrow(dat), replace = TRUE)
 
 options(viewer = NULL)
 
-m = maplibre(style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json') |>
+m = maplibre(
+  style = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+  # , renderWorldCopies = FALSE
+  ) |>
   set_projection("globe") |>
   add_navigation_control(visualize_pitch = TRUE) |>
   add_globe_control()
@@ -57,6 +60,7 @@ m |>
     )
     , parameters = list(
       depthCompare = "always"
+      , cullMode = "back"
     )
     , popup = TRUE
     , popup_options = geoarrowDeckgl:::popupOptions(anchor = "bottom-right")

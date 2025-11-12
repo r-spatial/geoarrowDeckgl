@@ -1,31 +1,32 @@
 writeGeoarrow = function(
     data
+    , path = tempfile()
     , layerId
+    , suffix = "layer"
     , geom_column_name
     , interleaved = TRUE
 ) {
 
-  layer_path = tempfile()
-  dir.create(layer_path)
-  layer_path = paste0(layer_path, "/", layerId, "_layer.arrow")
-  data_schema = nanoarrow::infer_nanoarrow_schema(data[1, ])
-
-  if (interleaved) {
-    geom_type = geoarrow::infer_geoarrow_schema(
-      data[1, ]
-      , coord_type = "INTERLEAVED"
+  dir.create(path)
+  path = file.path(
+    path
+    , sprintf(
+    "%s_%s.arrow"
+    , layerId
+    , suffix
     )
-    # data_schema = nanoarrow::infer_nanoarrow_schema(data)
-    data_schema$children[[geom_column_name]] = geom_type
-  }
-
-  data_out = nanoarrow::as_nanoarrow_array_stream(
-    data
-    , schema = data_schema
   )
 
-  nanoarrow::write_nanoarrow(data_out, layer_path)
+  data_stream = nanoarrow::as_nanoarrow_array_stream(
+    dat
+    , geometry_schema = geoarrow::infer_geoarrow_schema(
+      dat
+      , coord_type = ifelse(interleaved, "INTERLEAVED", "SEPARATE")
+    )
+  )
 
-  return(layer_path)
+  nanoarrow::write_nanoarrow(data_stream, path)
+
+  return(path)
 
 }

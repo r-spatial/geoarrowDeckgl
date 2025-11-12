@@ -139,7 +139,14 @@ addGeoArrowScatterplotLayer_default = function(
     )
   }
 
-  path_layer = writeGeoarrow(data, layerId, geom_column_name)
+  path_layer = writeGeoarrow(
+    data = data
+    , path = tempfile()
+    , layerId = layerId
+    , suffix = "layer"
+    , geom_column_name
+    , interleaved = TRUE
+  )
 
   map$dependencies = c(
     map$dependencies
